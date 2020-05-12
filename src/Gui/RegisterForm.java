@@ -9,6 +9,8 @@ import Entites.FosUser;
 import Services.ServiceUser;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.MultiButton;
+import com.codename1.components.SpanLabel;
+import com.codename1.io.ConnectionRequest;
 import com.codename1.io.FileSystemStorage;
 import com.codename1.ui.Button;
 import com.codename1.ui.ComboBox;
@@ -31,12 +33,22 @@ import com.codename1.ui.plaf.UIManager;
 import com.codename1.ui.spinner.Picker;
 import com.codename1.ui.util.Resources;
 import com.codename1.io.FileSystemStorage;
+import com.codename1.io.JSONParser;
+import com.codename1.io.Log;
+import com.codename1.io.NetworkManager;
+import static com.codename1.io.rest.Rest.options;
+import com.codename1.processing.Result;
+import com.codename1.ui.AutoCompleteTextField;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Graphics;
 import com.codename1.ui.Label;
 import com.codename1.ui.Toolbar;
+import com.codename1.ui.list.DefaultListModel;
+import com.codename1.util.regex.RE;
+import java.io.ByteArrayInputStream;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -52,29 +64,29 @@ public class RegisterForm extends Form {
     private Resources theme;
     private String newfilePath = "";
 
+    private boolean testTel;
+    private boolean testcode;
+   public static FosUser ip;
+    final DefaultListModel<String> options = new DefaultListModel<>();
+
+  
+
     public RegisterForm(Resources theme) {
 
-       super(new BorderLayout(BorderLayout.CENTER_BEHAVIOR_CENTER));
+        super(new BorderLayout(BorderLayout.CENTER_BEHAVIOR_CENTER));
         //super(new BoxLayout.y());
 
         getTitleArea().setUIID("Container");
 
-        
         Toolbar tb = getToolbar();
         tb.setTitleCentered(false);
-       
+
         Container titleCmp = BoxLayout.encloseY(
-                        
                 new Label("Registration Form", "CenterTitle")
-              
-                       
-                );
-        
-        
-       
+        );
+
         tb.setTitleComponent(titleCmp);
- 
-        
+
         Button haveaccount = new Button("YOU HAVE AN ACCOUNT? Login");
         haveaccount.setUIID("CreateNewAccountButton");
 
@@ -122,11 +134,11 @@ public class RegisterForm extends Form {
         FontImage.setMaterialIcon(paysIcon, FontImage.MATERIAL_EMOJI_FLAGS, 3);
         FontImage.setMaterialIcon(villeIcon, FontImage.MATERIAL_LANGUAGE, 3);
         FontImage.setMaterialIcon(dateIcon, FontImage.MATERIAL_CALENDAR_TODAY, 3);
-        FontImage.setMaterialIcon(posteIcon, FontImage.MATERIAL_WORK_OUTLINE , 3);
+        FontImage.setMaterialIcon(posteIcon, FontImage.MATERIAL_WORK_OUTLINE, 3);
         FontImage.setMaterialIcon(codeIcon, FontImage.MATERIAL_RECENT_ACTORS, 3);
         FontImage.setMaterialIcon(photoIcon, FontImage.MATERIAL_ADD_A_PHOTO, 3);
         //--------------------------------------------------------------------------------------------  
-
+  
         TextField Adresse = new TextField();
         Adresse.setHint("Adresse");
         TextField poste = new TextField();
@@ -151,11 +163,42 @@ public class RegisterForm extends Form {
         datePicker.setType(Display.PICKER_TYPE_DATE);
         ComboBox Sexe = new ComboBox("Homme", "Femme");
         ComboBox Civilite = new ComboBox("Mademoiselle", "Monsieur", "Madame");
-        ComboBox roles = new ComboBox("Admin", "Chef d'equipe", "Vendeur", "Achteur", "Reparateur");
+        ComboBox roles = new ComboBox("Chef", "Vendeur", "Achteur", "Reparateur");
 
         datePicker.setDate(new Date());
         ImageViewer i = new ImageViewer();
         Button imgBtn = new Button("parcourir");
+
+        code_postal.addDataChangedListener((e, k) -> {
+            RE r = new RE("([0-9]+(\\.[0-9]+)?)+");
+
+            if (!r.match(code_postal.getText())) {
+                Dialog.show("Alerte", "Le champ CODE POSTAL doit etre de type nombre", "Ok", null);
+                testcode = false;
+            } else {
+                testcode = true;
+            }
+        });
+        cin.addDataChangedListener((e, k) -> {
+            RE r = new RE("([0-9]+(\\.[0-9]+)?)+");
+
+            if (!r.match(tel.getText())) {
+                Dialog.show("Alerte", "Le champ cin doit etre de type nombre et comporte 8 chiffres", "Ok", null);
+                testTel = false;
+            } else {
+                testTel = true;
+            }
+        });
+        tel.addDataChangedListener((e, k) -> {
+            RE r = new RE("([0-9]+(\\.[0-9]+)?)+");
+
+            if (!r.match(tel.getText())) {
+                Dialog.show("Alerte", "Le champ Téléphone doit etre de type nombre et comporte 8 chiffres", "Ok", null);
+                testTel = false;
+            } else {
+                testTel = true;
+            }
+        });
         TextField tfimage = new TextField("", "Veuillez saisir l'url de votre image");
         imgBtn.addActionListener(e -> {
             Display.getInstance().openGallery(new ActionListener() {
@@ -182,31 +225,32 @@ public class RegisterForm extends Form {
         Button Register = new Button();
         Register.setText("Register");
         Register.setUIID("LoginButton");
+
         Register.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
-                 if ((username.getText().equals("")) || (password.getText().equals("")) || (datePicker.getText().equals("")) || (poste.getText().equals(""))
+                if ((username.getText().equals("")) || (password.getText().equals("")) || (datePicker.getText().equals("")) || (poste.getText().equals(""))
                         || (cin.getText().equals("")) || (nom.getText().equals("")) || (prenom.getText().equals("")) || (email.getText().equals(""))
                         || (tel.getText().equals("")) || (code_postal.getText().equals("")) || (Adresse.getText().equals("")) || (tfimage.getText().equals(""))
-                        || (Pays.getText().equals("")) || (Ville.getText().equals(""))|| (Sexe.getSelectedItem().toString().equals(""))|| 
-                (roles.getSelectedItem().toString().equals(""))||(Civilite.getSelectedItem().toString().equals(""))) 
+                        || (Pays.getText().equals("")) || (Ville.getText().equals("")) || (Sexe.getSelectedItem().toString().equals(""))
+                        || (roles.getSelectedItem().toString().equals("")) || (Civilite.getSelectedItem().toString().equals(""))) {
                     Dialog.show("Alert", "Please fill all the fields", new Command("OK"));
-                 else {
-                try {
-                    FosUser t = new FosUser(username.getText(), password.getText(), datePicker.getText(),
-                            poste.getText(), cin.getText(), nom.getText(), prenom.getText(), email.getText(),
-                            tel.getText(), code_postal.getText(), Adresse.getText(), tfimage.getText(), Civilite.getSelectedItem().toString(), Pays.getText(), Ville.getText(),
-                            Sexe.getSelectedItem().toString(), roles.getSelectedItem().toString());
-                    if (ServiceUser.getInstance().adduser(t)) {
-                        Dialog.show("Success", "Connection accepted", new Command("OK"));
-                    } else {
-                        Dialog.show("ERROR", "Server error", new Command("OK"));
+                } else {
+                    try {
+                        FosUser t = new FosUser(username.getText(), password.getText(), datePicker.getText(),
+                                poste.getText(), cin.getText(), nom.getText(), prenom.getText(), email.getText(),
+                                tel.getText(), code_postal.getText(), Adresse.getText(), tfimage.getText(), Civilite.getSelectedItem().toString(), Pays.getText(), Ville.getText(),
+                                Sexe.getSelectedItem().toString(), roles.getSelectedItem().toString());
+                        if (ServiceUser.getInstance().adduser(t)) {
+                            Dialog.show("Success", "Connection accepted", new Command("OK"));
+                        } else {
+                            Dialog.show("ERROR", "Server error", new Command("OK"));
+                        }
+                    } catch (NumberFormatException e) {
+                        Dialog.show("ERROR", "Status must be a number", new Command("OK"));
                     }
-                } catch (NumberFormatException e) {
-                    Dialog.show("ERROR", "Status must be a number", new Command("OK"));
-                }
 
-            }
+                }
 
             }
         });
@@ -256,7 +300,7 @@ public class RegisterForm extends Form {
                         add(BorderLayout.WEST, posteIcon),
                 BorderLayout.center(tfimage).
                         add(BorderLayout.WEST, photoIcon),
-                 imgBtn,
+                imgBtn,
                 Register,
                 haveaccount
         );
@@ -273,6 +317,12 @@ public class RegisterForm extends Form {
         entry.put("", name);
 
         return entry;
+    }
+
+    public boolean isNumber(String s) {
+        RE r = new RE("(20|21|22|70|71|50|51)[0-9][0-9][0-9][0-9][0-9][0-9]$");
+        boolean matcher = r.match(s);
+        return matcher;
     }
 
 }

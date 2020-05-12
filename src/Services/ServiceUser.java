@@ -18,12 +18,12 @@ import com.codename1.ui.ComboBox;
 import com.codename1.ui.Display;
 import com.codename1.ui.events.ActionListener;
 
-
-
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
 import utils.Statics;
 
 /**
@@ -41,6 +41,7 @@ public class ServiceUser {
     public boolean resultOK;
     public static ServiceUser instance = null;
 
+
     public ServiceUser() {
         req = utils.DataSource.getInstance().getRequest();
     }
@@ -53,10 +54,9 @@ public class ServiceUser {
     }
 
     public boolean adduser(FosUser u) {
-        String url = "http://localhost/Velo/web/app_dev.php/api/users/new?&Username="+ u.getUsername() +"&Email="+ u.getEmail() +"&Password="+ u.getPassword() +"&roles="+ u.getRoles() +"&Cin="+u.getCin()+"&Nom="+ u.getNom() +"&Prenom="+ u.getPrenom()+"&Sexe="+ u.getSexe()+"&Date_naissance="+ u.getDate_naissance()+"&Num_tel="+u.getNum_tel()+
-         "&Adresse="+ u.getAdresse() +"&Poste="+u.getPoste() +"&Civilite=" + u.getCivilite() +"&Pays="+u.getPays()+"&Ville="+u.getVille()+"&Code_postal="+ u.getCode_postal()+"&photo="+u.getPhoto();
-               
-       
+        String url = "http://localhost/Velo/web/app_dev.php/api/users/new?&Username=" + u.getUsername() + "&Email=" + u.getEmail() + "&Password=" + u.getPassword() + "&roles=" + u.getRoles() + "&Cin=" + u.getCin() + "&Nom=" + u.getNom() + "&Prenom=" + u.getPrenom() + "&Sexe=" + u.getSexe() + "&Date_naissance=" + u.getDate_naissance() + "&Num_tel=" + u.getNum_tel()
+                + "&Adresse=" + u.getAdresse() + "&Poste=" + u.getPoste() + "&Civilite=" + u.getCivilite() + "&Pays=" + u.getPays() + "&Ville=" + u.getVille() + "&Code_postal=" + u.getCode_postal() + "&photo=" + u.getPhoto();
+
         req.setUrl(url);
         req.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
@@ -124,9 +124,6 @@ public class ServiceUser {
         return velos;
     }
 
-  
-   
-    
     public ArrayList<FosUser> parseTasks(String jsonText) throws ParseException {
         try {
             velos = new ArrayList<>();
@@ -183,12 +180,8 @@ public class ServiceUser {
 
         return type;
     }*/
-    public void sendEmail() {
-        Message m = new Message("Bonjour Monsieur,\n Pouvez vous me répondre.\n Merci. ");
-//        m.getAttachments().put(textAttachmentUri, "text/plain");
-//        m.getAttachments().put(imageAttachmentUri, "image/png");
-        Display.getInstance().sendMessage(new String[]{"nejibalazzem@gmail.com"}, "Réclamation", m);
-    }
+ 
+
 
     /*public void Notification(){
         LocalNotification n = new LocalNotification();
@@ -204,7 +197,6 @@ public class ServiceUser {
                 LocalNotification.REPEAT_MINUTE  // Whether to repeat and what frequency
         );
     }*/
-    public void localNotificationReceived(String notificationId) {
-
-    }
+ 
+    
 }

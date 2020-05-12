@@ -26,7 +26,7 @@ import com.codename1.ui.util.Resources;
  *
  * @author root
  */
-public class EventForm extends SideMenuBaseForm{
+public class EventForm extends SideMenuBaseForma{
      private static final int[] COLORS = {0xf8e478, 0x60e6ce, 0x878aee};
     private static final String[] LABELS = {"Design", "Coding", "Learning"};
 
