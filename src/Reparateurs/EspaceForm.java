@@ -1,8 +1,6 @@
 
 package Reparateurs;
 
-
-import Client.GoogleMap;
 import Entites.rendezvous;
 import Entites.Fos_User;
 import Entites.Reparateur;
@@ -40,6 +38,7 @@ import com.codename1.ui.plaf.Border;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.spinner.Picker;
 import com.codename1.ui.util.Resources;
+import com.codename1.util.regex.RE;
 import com.nexmo.client.NexmoClient;
 import com.nexmo.client.NexmoClientException;
 import com.nexmo.client.auth.AuthMethod;
@@ -48,10 +47,14 @@ import com.nexmo.client.sms.SmsSubmissionResult;
 import com.nexmo.client.sms.messages.TextMessage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 
 
 
 public class EspaceForm extends Form {
+    private boolean testcode;
     private void initStarRankStyle(Style s, Image star) {
     s.setBackgroundType(Style.BACKGROUND_IMAGE_TILE_BOTH);
     s.setBorder(Border.createEmpty());
@@ -92,7 +95,7 @@ Button b = new Button("Valid an appointement");
 Button b1 = new Button("Delete Rdv");
 Button b2 = new Button("Refuse");
  FontImage.setMaterialIcon(b1, FontImage.MATERIAL_DELETE);
- FontImage.setMaterialIcon(b2, FontImage.MATERIAL_DELETE);
+ FontImage.setMaterialIcon(b2, FontImage.MATERIAL_MAIL);
 FontImage.setMaterialIcon(b, FontImage.MATERIAL_ADD_COMMENT);
             Label l2 = new Label("Name: " + rep.get(i).getNom());
             Label l3 = new Label("Email: " + rep.get(i).getEmail());
@@ -138,15 +141,50 @@ FontImage.setMaterialIcon(b, FontImage.MATERIAL_ADD_COMMENT);
     
                
                btnConf.addActionListener((evt1) -> {
-             getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e-> previous.showBack());
-               validrendezvous p=new validrendezvous( dateheure.getText(),prix.getText(),promos.getText(),etats.getText() ,message.getText());
-               ws.validsrendezvous(p,y,w);
-               ToastBar.showInfoMessage("succes validated");
-               previous.showBack();
-             //add(typepannet);add(typepanne);add(messaget);add(message);
-            Message mk = new Message("Vous avez choisit de noter notre service avec "+promo.getSelectedItem()+"! MERCI ");
-            Display.getInstance().sendMessage(new String[] {"nesrinezouaoui583@gmail.com"}, "Avis sur le service annonce dans l'application Souk El Medina", mk);
-             
+                   try {
+                       getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e-> previous.showBack());
+                       validrendezvous p=new validrendezvous( dateheure.getText(),prix.getText(),promos.getText(),etats.getText() ,message.getText());
+                       ws.validsrendezvous(p,y,w);
+                       ToastBar.showInfoMessage("succes validated");
+                       previous.showBack();
+                       //add(typepannet);add(typepanne);add(messaget);add(message);
+                       //Message mk = new Message("Vous avez choisit de noter notre service avec "+promo.getSelectedItem()+"! MERCI ");
+                       //Display.getInstance().sendMessage(new String[] {"nesrinezouaoui583@gmail.com"}, "Avis sur le service annonce dans l'application Souk El Medina", mk);
+                ListReparateurService ser = new ListReparateurService();
+                validrendezvous t=new validrendezvous();
+                t.setMessage(message.getText());
+                t.setPrix(prix.getText());
+                t.setPromo("promo="+promo.getSelectedItem());
+                t.setEtat("etat="+etat.getSelectedItem());
+                t.setDateheure(dateheure.getText());
+                ser.validsrendezvous(t,y,w);
+                AuthMethod auth = new TokenAuthMethod("b696c599", "ev9gpTXEbt7vWlOT");  // (api_key,api_secret)
+                NexmoClient client = new NexmoClient(auth);
+                SmsSubmissionResult[] responses;
+                try {
+                    responses = client.getSmsClient().submitMessage(new TextMessage(
+                            "nesrine",
+                            "+21658967048",
+                            "votre demande a été validée !"));
+                    for (SmsSubmissionResult response : responses) {
+                        System.out.println(response);
+                    }
+                } catch (IOException | NexmoClientException ex) {
+                    
+                }
+                EspaceForm com=new EspaceForm(previous);
+                com.show();
+                       
+                       
+                       
+                       
+                       
+                       
+                        EspaceForm  v= new EspaceForm(previous);
+                       v.show();
+                   } catch (ParseException ex) {
+                       Logger.getLogger(EspaceForm.class.getName()).log(Level.SEVERE, null, ex);
+                   }
              
             });
 
@@ -160,6 +198,16 @@ FontImage.setMaterialIcon(b, FontImage.MATERIAL_ADD_COMMENT);
               f1.add(etats);
               f1.add(message);
               f1.add(btnConf);
+                              
+                prix.addDataChangedListener((e,k)->{
+                            RE r = new RE("([0-9]+(\\.[0-9]+)?)+");
+
+           if (!r.match(prix.getText()))
+           {
+           Dialog.show("Alerte", "Le champ prix doit etre de type nombre", "Ok",null);
+           testcode = false ;
+           }else{testcode= true;}
+               });
               f1.show();
                          f1.getToolbar().addCommandToLeftBar("back", null, (e -> {
                        
@@ -176,19 +224,25 @@ FontImage.setMaterialIcon(b, FontImage.MATERIAL_ADD_COMMENT);
                }
                  }); 
     b1.addActionListener((evt) -> {
-          if (Dialog.show("Delete", "Êtes vous sûr de supprimer cette publication??", "Oui", "Non")) {
-             ws.DeleteMaRdv(p,y);
-             c3.remove();
-              c1.remove();
-               c2.remove();
+          if (Dialog.show("Delete", "Êtes vous sûr de supprimer ce rendezvous??", "Oui", "Non")) {
+              try {
+                  ws.DeleteMaRdv(p,y);
+                  c3.remove();
+                  c1.remove();
+                  c2.remove();
+                  EspaceForm  v= new  EspaceForm(previous);
+                  v.show();
+                          } catch (ParseException ex) {
+                 
+              }
           }
      });
         b2.addActionListener((ActionListener) (ActionEvent evt1) -> {
             try {
                 ListReparateurService ser = new ListReparateurService();
-                validrendezvous t=new validrendezvous();
-                t.setMessage(l5.getText());
-                ser.validsrendezvous(t,y,w);
+                rendezvous t=new rendezvous();
+                t.setNom(l2.getText());
+                ser.getRendezvous();
                 AuthMethod auth = new TokenAuthMethod("b696c599", "ev9gpTXEbt7vWlOT");  // (api_key,api_secret)
                 NexmoClient client = new NexmoClient(auth);
                 SmsSubmissionResult[] responses;
@@ -196,7 +250,7 @@ FontImage.setMaterialIcon(b, FontImage.MATERIAL_ADD_COMMENT);
                     responses = client.getSmsClient().submitMessage(new TextMessage(
                             "nesrine",
                             "+21658967048",
-                            "Merci d'avoir laisser un commentaire !"));
+                            "votre demande a été refusée !"));
                     for (SmsSubmissionResult response : responses) {
                         System.out.println(response);
                     }

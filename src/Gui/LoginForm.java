@@ -49,13 +49,13 @@ public class LoginForm extends Form {
         Button loginButton = new Button("LOGIN");
         loginButton.setUIID("LoginButton");
         
-        /*loginButton.addActionListener(e -> {
+        loginButton.addActionListener(e -> {
             new ProfileForm(theme).show();
-        });*/
-       
-          loginButton.addActionListener(e -> {
-            new ProfileReparateurs(theme).show();
         });
+       
+         /* loginButton.addActionListener(e -> {
+            new ProfileReparateurs(theme).show();
+        });*/
         
         
         Button createNewAccount = new Button("CREATE NEW ACCOUNT");

@@ -31,6 +31,7 @@ import com.codename1.ui.plaf.Border;
 import com.codename1.ui.plaf.Style;
 import java.util.ArrayList;
 
+
 /**
  *
  * @author HP
@@ -86,11 +87,17 @@ Button b1 = new Button("Delete Rdv");
             c3.add(b1);
 
     b1.addActionListener((evt) -> {
-          if (Dialog.show("Delete", "Êtes vous sûr de supprimer cette publication??", "Oui", "Non")) {
-             ws. DeleteRdvValide(p,y);
-             c3.remove();
-              c1.remove();
-               c2.remove();
+          if (Dialog.show("Delete", "Êtes vous sûr de supprimer ce rendezvous validé ??", "Oui", "Non")) {
+              try {
+                  ws. DeleteRdvValide(p,y);
+                  c3.remove();
+                  c1.remove();
+                  c2.remove();
+                  listvalidatedForm  v= new  listvalidatedForm(previous);
+                  v.show();
+              } catch (ParseException ex) {
+                
+              }
           }
      });
   

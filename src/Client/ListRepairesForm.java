@@ -32,6 +32,7 @@ import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.plaf.Border;
 import com.codename1.ui.plaf.Style;
 import java.util.ArrayList;
+;
 
 /**
  *
@@ -99,7 +100,7 @@ FontImage.setMaterialIcon(b, FontImage.MATERIAL_ADD_COMMENT);
               TextField typepannet = new TextField();
               
         
-             ComboBox typepanne = new ComboBox("Evénement sportif","Bourse aux velos","Balade avec les velos");
+             ComboBox typepanne = new ComboBox("DIRECTION ET ROUES","FREINS","SUSPENSION");
               //TextField typepanne=new TextField("","typepanne");
               TextField message=new TextField("","Message");
               Button btnConf = new Button("Ajouter");
@@ -114,8 +115,8 @@ FontImage.setMaterialIcon(b, FontImage.MATERIAL_ADD_COMMENT);
              getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e-> previous.showBack());
                rendezvous p=new rendezvous( typepannet.getText() ,message.getText());
                ws.ajoutRendezvous(p,y);
-               ToastBar.showInfoMessage("Votre evenement est supprimée avec succés");
-               previous.showBack();
+               ToastBar.showInfoMessage("Votre rendezvous  est ajouté avec succés");
+              
              //add(typepannet);add(typepanne);add(messaget);add(message);
              
             });
@@ -127,7 +128,17 @@ FontImage.setMaterialIcon(b, FontImage.MATERIAL_ADD_COMMENT);
               f1.add(typepannet);
               f1.add(btnConf);
               f1.show();
-
+            Toolbar tb2= f1.getToolbar();
+       tb2.addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, (ActionListener) (ActionEvent evt1) -> {
+                   try {
+                       //previous.showBack();
+                       ListRepairesForm  v= new ListRepairesForm(previous);
+                       v.show();
+                   } catch (ParseException ex) {
+                      
+                   }
+                
+        });
                }
                  }); 
 add(c1);
@@ -151,5 +162,5 @@ add(c1);
         g.fillArc(height / 2 - height / 4, height / 6, height / 2, height / 2, 0, 360);
         return img;
     }
- 
+  
 }

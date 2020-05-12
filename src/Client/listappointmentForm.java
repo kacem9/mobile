@@ -127,7 +127,17 @@ FontImage.setMaterialIcon(b, FontImage.MATERIAL_ADD_COMMENT);
               f1.add(typepannet);
               f1.add(btnConf);
               f1.show();
-
+            Toolbar tb2= f1.getToolbar();
+       tb2.addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, (ActionListener) (ActionEvent evt1) -> {
+                   try {
+                       //previous.showBack();
+                       listappointmentForm  v= new listappointmentForm(previous);
+                       v.show();
+                   } catch (ParseException ex) {
+                      
+                   }
+                
+        });
                }
 
          
