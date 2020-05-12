@@ -7,13 +7,17 @@ package Evenement;
 
 import Entites.Event;
 import Services.ServicesEvent;
-import View.ModifyForm;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.SpanLabel;
 import com.codename1.components.ToastBar;
 import com.codename1.l10n.ParseException;
+import com.codename1.location.Geofence;
+import com.codename1.location.Location;
+import com.codename1.location.LocationManager;
+import com.codename1.notifications.LocalNotification;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
+import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
@@ -29,6 +33,7 @@ import com.codename1.ui.plaf.Border;
 import com.codename1.ui.plaf.Style;
 import java.util.ArrayList;
 import static jdk.nashorn.internal.runtime.Debug.id;
+import utils.GeofenceListenerImpl;
 
 /**
  *
@@ -124,8 +129,8 @@ public class ListEventForm extends Form{
                     ToastBar.showErrorMessage("Erreur de suppression");
                 }
             });
-        
-           
+
+          
             btnmodif.addActionListener((evt) -> {
                 new ModifierEventForm(this,id, Nom, Description, Lieu_event,Prix,Nbr_participant).show();
             });
@@ -136,6 +141,7 @@ public class ListEventForm extends Form{
        
 
         }
+       
        getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e-> previous.showBack());
     
     }

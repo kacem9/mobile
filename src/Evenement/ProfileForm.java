@@ -65,6 +65,7 @@ public class ProfileForm extends SideMenuBaseForm {
         
         
         setupSideMenu(res);
+        
     }
     
    

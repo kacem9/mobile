@@ -3,7 +3,6 @@ package com.mycompany.myapp;
 
 import Client.LoginForm;
 import Evenement.LoginFormEvent;
-import View.HomeForm;
 import com.codename1.io.ConnectionRequest;
 import static com.codename1.ui.CN.*;
 import com.codename1.ui.Display;
@@ -53,7 +52,7 @@ public class MyApplication {
     
     public void start() {
         
-       // new LoginForm(theme).show();
+      // new LoginForm(theme).show();
         new LoginFormEvent(theme).show();
     } 
 

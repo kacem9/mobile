@@ -11,7 +11,6 @@ import Entites.Fos_User;
 import Entites.Participation;
 import Services.ServiceParticipation;
 import Services.ServicesEvent;
-import View.ModifyForm;
 import com.codename1.components.ImageViewer;
 import com.codename1.components.SpanLabel;
 import com.codename1.components.ToastBar;
@@ -135,7 +134,7 @@ public class ListEventFormClient extends Form{
                 int id_participation=list.get(j).getId_participation();
                 System.out.println(id_participation);
                 TextField tfidparticipation = new TextField(list.get(j).getId_participation());
-                TextField tfidUser = new TextField(u.getId());
+                TextField tfidUser = new TextField(1);
                 TextField tfevent = new TextField(list.get(j).getEvent());
                 
                
@@ -155,7 +154,8 @@ public class ListEventFormClient extends Form{
             });
             
             btParticiper.addActionListener((evt) -> {
-                
+                p.setEvent(Integer.parseInt(tfevent.getText()));
+                p.setEvent(1);
                     try {
                  
                         if(sp.Participer(id_participation, p))

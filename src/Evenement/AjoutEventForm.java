@@ -9,6 +9,7 @@ import Entites.Event;
 import Entites.Fos_User;
 import Services.ServicesEvent;
 import com.codename1.io.FileSystemStorage;
+import com.codename1.notifications.LocalNotification;
 import com.codename1.ui.Button;
 import com.codename1.ui.Calendar;
 import com.codename1.ui.ComboBox;
@@ -146,6 +147,15 @@ public class AjoutEventForm extends Form{
                 
             }
         });
+//      btnValider.addActionListener((e)-> { LocalNotification n = new LocalNotification();
+//        n.setId("notification");
+//        n.setAlertBody("vous avez ajouter un nouveau evenement");
+//        n.setAlertTitle("alert");
+//        Display.getInstance().scheduleLocalNotification(
+//                n,
+//                System.currentTimeMillis() + 10 * 1000, 
+//                LocalNotification.REPEAT_MINUTE  
+//        ); });
     }
     
      private Image createCircleLine(int color, int height, boolean first) {
