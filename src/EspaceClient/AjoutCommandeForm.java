@@ -43,11 +43,11 @@ public class AjoutCommandeForm {
     public String num;
     public static InfoPersonnel ip;
    // final DefaultListModel<String> options = new DefaultListModel<>();
-    
+     
     private Form f;
     private boolean testTel;
     private boolean testcode;
-
+ final DefaultListModel<String> options = new DefaultListModel<>();
     private Label createForFont(Font fnt, String s) {
         Label l = new Label(s);
         l.getUnselectedStyle().setFont(fnt);
@@ -62,8 +62,9 @@ public class AjoutCommandeForm {
     public AjoutCommandeForm()
     {
                 f = new Form("Informations personnels", new BoxLayout(BoxLayout.Y_AXIS));
-              TextField adresse = new TextField();
-               
+             TextField adresse = new TextField();
+              
+
     
  
  
@@ -138,6 +139,7 @@ public class AjoutCommandeForm {
     {
 return ip;
     }*/
+        
     public Form getF() {
         return f;
     }

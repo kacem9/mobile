@@ -60,7 +60,7 @@ public class ListVeloc extends Form {
         
        
         tb.setTitleComponent(titleCmp);
-   FontImage arrowDown = FontImage.createMaterial(FontImage.MATERIAL_KEYBOARD_ARROW_DOWN, "Label", 3);
+   FontImage arrowDown = FontImage.createMaterial(FontImage.MATERIAL_AC_UNIT, "Label", 3);
               EncodedImage enc ;
        ServiceVelos se = new ServiceVelos();
        ArrayList<Velo> lis = se.getAllVelos();
@@ -79,6 +79,7 @@ public class ListVeloc extends Form {
            //  img = Image.createImage(FileSystemStorage.getInstance().openInputStream(path))
             ImageViewer img1 = new ImageViewer(URLImage.createToStorage(encImage, "file" + lis.get(i).getPhoto(),
             "http://127.0.0.1/Velo/web/images/"+lis.get(i).getPhoto()));
+            
             //http://127.0.0.1/symfony/Velo/web/images/
             Button addcard = new Button("Add to card ");
            
@@ -90,6 +91,7 @@ public class ListVeloc extends Form {
              String des = lis.get(i).getDescription();
               String date = lis.get(i).getDate_circulation();
                      String image = lis.get(i).getPhoto();
+                    
                String localisation = lis.get(i).getLocalitsation_velo();
                 String quantity = String.valueOf(lis.get(i).getQuantity());
                
@@ -103,14 +105,14 @@ public class ListVeloc extends Form {
             c3.add(l3);
             c3.add(l4);
             c3.add(l5);
-
-           
-            c3.add(addcard);
-           // c3.add(btnsupp);
-          TextField   txtQte = new TextField();
+TextField   txtQte = new TextField();
             txtQte.setHint("Quantité");
             TextField tf = new TextField();
-              c3.add(txtQte);
+             
+            c3.add(txtQte);
+            c3.add(addcard);
+           // c3.add(btnsupp);
+          
             
             int id = lis.get(i).getId();
          

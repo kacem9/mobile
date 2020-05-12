@@ -70,6 +70,7 @@ public class AjouterLigneDeCommande {
           // System.out.println("iduuuuu "+p.getIdu());
                    //lcs.addLigneDeCommande(SessionUser.getUser().getId(), p);
            lcs.addLigneDeCommande(21, p);
+           ps.DeleteFromPanier(21, p.getId());
 //ps.DeleteFromPanier(SessionUser.getUser().getId(), p.getId());      
        }
        AffichageCommande ac = new AffichageCommande();

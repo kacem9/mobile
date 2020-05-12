@@ -33,14 +33,15 @@ public class LigneDeCommandeServices {
     public ArrayList<LigneDeCommandeProduit> getLignesCommandeProduit(Integer id) {
         ConnectionRequest con = new ConnectionRequest();
         System.out.println("id"+id);
-       String Url = "http://localhost/SoukLemdina/web/commande/afflcJson/"+id;
+       //String Url = "http://127.0.0.1/Velo/web/app_dev.php/api/afflcJson/"+id;
+        String Url = Statics.BASE_URL+"/afflcJson/"+id;
+         
        con.setUrl(Url);
         ArrayList<LigneDeCommandeProduit> mapPanier = new ArrayList<>();
         con.addResponseListener((e) -> {
             String jsonRes = new String(con.getResponseData());
             try {
                 JSONParser j = new JSONParser();
-
                 Map<String, Object> lcommandes = j.parseJSON(new CharArrayReader(jsonRes.toCharArray()));
 
                 List<Map<String, Object>> list = (List<Map<String, Object>>) lcommandes.get("root");
@@ -54,10 +55,10 @@ public class LigneDeCommandeServices {
 
                     LigneDeCommandeProduit lcp = new LigneDeCommandeProduit();
                     lcp.setIdLigneDeCommande((int)Float.parseFloat(obj.get("id").toString()));
-                    lcp.setLibelle(obj.get("libelle").toString());
+                   // lcp.setLibelle(obj.get("libelle").toString());
                     lcp.setDescription(obj.get("description").toString());
                     lcp.setPrixTotal((double)obj.get("prixTotal"));
-                    lcp.setDateLivraison(sdf.format(new Date((long)Float.parseFloat(obj.get("dateLivraison").toString()))));
+                    lcp.setDateLivraison(obj.get("dateLivraison").toString());
                     lcp.setAdresse(obj.get("adresse1").toString());
                     lcp.setAdresse2(obj.get("adresse2").toString());
                     lcp.setVille(obj.get("ville").toString());
@@ -154,7 +155,7 @@ connReq.addResponseListener((e) -> {
         try {
             System.out.println("idddddddddddddddddddddd mta3 commande  : "+AffichageCommande.idC);
             System.out.println("adresseeeeeee mta3 commande  : "+ip.getAdresse());
-            System.out.println("http://localhost/SoukLemdina/web/commande/modifierlcJson/" + AffichageCommande.idC + 
+            System.out.println("http://localhost/Velo/web/app_dev.php/api/modifierlcJson/" + AffichageCommande.idC + 
                     "?adresse=" + ip.getAdresse()+
                      "&adresse2=" + ip.getAdresse2()+ 
                     "&ville=" + ip.getVille()+ 
@@ -163,7 +164,7 @@ connReq.addResponseListener((e) -> {
             ConnectionRequest connReq = new ConnectionRequest();
             connReq.setPost(true);
             connReq.setContentType("application/json");
-            connReq.setUrl("http://localhost/SoukLemdina/web/commande/modifierlcJson/" + AffichageCommande.idC + 
+            connReq.setUrl("http://localhost/Velo/web/app_dev.php/api/modifierlcJson/" + AffichageCommande.idC + 
                     "?adresse=" + ip.getAdresse()+
                      "&adresse2=" + ip.getAdresse2()+ 
                     "&ville=" + ip.getVille()+ 

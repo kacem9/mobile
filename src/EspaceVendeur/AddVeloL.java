@@ -30,6 +30,7 @@ import com.codename1.ui.events.ActionListener;
 import com.codename1.ext.filechooser.FileChooser;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.spinner.Picker;
+import com.codename1.notifications.LocalNotification;
 
 import java.io.IOException;
 import utils.UploadFile;
@@ -146,6 +147,17 @@ public class AddVeloL  extends Form{
                         {
                             System.out.println(v);
                             Dialog.show("Success","Connection accepted",new Command("OK"));
+                          LocalNotification n = new LocalNotification();
+        n.setId("notification");
+        n.setAlertBody("Your Bike added ");
+        n.setAlertTitle("Succefull !!");
+        //n.setAlertSound("/notification_sound_bells.mp3"); //file name must begin with notification_sound
+        
+        Display.getInstance().scheduleLocalNotification(
+                n,
+                System.currentTimeMillis() + 10 * 1000, // fire date/time
+                LocalNotification.REPEAT_MINUTE  // Whether to repeat and what frequency
+        ); 
                         }else
                             Dialog.show("ERROR", "Server error", new Command("OK"));
                     } catch (Exception e) {

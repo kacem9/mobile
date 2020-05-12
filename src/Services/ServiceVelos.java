@@ -126,6 +126,7 @@ public class ServiceVelos {
             for (Map<String, Object> obj : list) {
                  SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy ");
                 int id = (int)Float.parseFloat(obj.get("id").toString());
+                
                                                     int price_location = (int)Float.parseFloat(obj.get("priceLocation").toString());
 
                   int quantity = (int)Float.parseFloat(obj.get("quantity").toString());

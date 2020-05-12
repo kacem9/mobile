@@ -39,7 +39,7 @@ public class LocationFormV extends SideMenuBaseForm{
 
         Button menuButton = new Button("");
         menuButton.setUIID("Title");
-        FontImage.setMaterialIcon(menuButton, FontImage.MATERIAL_MENU);
+        FontImage.setMaterialIcon(menuButton, FontImage.MATERIAL_AC_UNIT);
         menuButton.addActionListener(e -> getToolbar().openSideMenu());
         
         
@@ -64,17 +64,17 @@ public class LocationFormV extends SideMenuBaseForm{
         
         setupSideMenu(res);
    Label lOption = new Label("Choisir option : ");
-         Button Ajoutevent = new Button("Ajouter Velos(s)");
+        
          Button Affevent = new Button("Afficher Velos(s)");
-          FontImage.setMaterialIcon(Ajoutevent, FontImage.MATERIAL_ADD_COMMENT);
+        
         FontImage.setMaterialIcon(Affevent, FontImage.MATERIAL_VIEW_LIST);
-        Ajoutevent.getStyle().setBorder(Border.createDashedBorder(CENTER,CENTER ));
+      
         Affevent.getStyle().setBorder(Border.createDashedBorder(CENTER, CENTER));
-         Ajoutevent.setUIID("SkipButton");
+        // Ajoutevent.setUIID("SkipButton");
         Affevent.setUIID("SkipButton");
          Container southLayout = BoxLayout.encloseY(
                        
-                     lOption,   Affevent,Ajoutevent
+                     lOption,   Affevent
                 );
         add(BorderLayout.south(
                 southLayout
@@ -86,9 +86,7 @@ public class LocationFormV extends SideMenuBaseForm{
                 ex.printStackTrace();
             }
         });
-        Ajoutevent.addActionListener((evt) -> {
-            new AddVeloL(this).show();
-        });
+       
     }
    
     

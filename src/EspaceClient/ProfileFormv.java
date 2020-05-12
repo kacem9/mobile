@@ -36,11 +36,12 @@ public class ProfileFormv extends SideMenuBaseForm {
         super(BoxLayout.y());
         Toolbar tb = getToolbar();
         tb.setTitleCentered(false);
-       
+  
+
 //        System.out.println(SessionUser.getUser().getId());
         Button menuButton = new Button("");
         menuButton.setUIID("Title");
-        FontImage.setMaterialIcon(menuButton, FontImage.MATERIAL_MENU);
+        FontImage.setMaterialIcon(menuButton, FontImage.MATERIAL_AC_UNIT);
         menuButton.addActionListener(e -> getToolbar().openSideMenu());
         
         

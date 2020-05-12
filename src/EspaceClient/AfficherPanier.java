@@ -132,7 +132,7 @@ public class AfficherPanier {
                     System.out.println("idu " + pan.getIdu());
                     System.out.println("id " + pan.getId());
                     ps.DeleteFromPanier(21, pan.getId());
-                  //  ps.DeleteFromPanier(pan.getIdu(), pan.getId());
+                  // ps.DeleteFromPanier(pan.getIdu(), pan.getId());
                     AfficherPanier ijamennadhou9lbenna = new AfficherPanier();
                     ijamennadhou9lbenna.getF().showBack();
                 }
@@ -147,10 +147,16 @@ public class AfficherPanier {
             public void actionPerformed(ActionEvent evt) {
              
                AjoutCommandeForm acf = new AjoutCommandeForm();
+               
             }
         });
         Toolbar tb = f.getToolbar();
-          
+               tb.addMaterialCommandToSideMenu("Products", FontImage.MATERIAL_AC_UNIT, e->{try {
+           new ListVeloc(f).show();
+            } catch (Exception IOE) {
+              System.out.println("er");
+            }
+});  
        // tb.addMaterialCommandToSideMenu("WishList", FontImage.MATERIAL_ADD_A_PHOTO, e->{new AfficherLigneWishlist(SessionUser.getUser().getId()).getF().show();});
        tb.addMaterialCommandToSideMenu("Commandes", FontImage.MATERIAL_AC_UNIT, e->{new AffichageCommande().getF().show();});
         f.show();

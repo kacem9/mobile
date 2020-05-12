@@ -11,6 +11,7 @@ import Entites.LigneDeCommandeProduit;
 import Services.CommandeServices;
 import Services.LigneDeCommandeServices;
 import com.codename1.components.Accordion;
+import com.codename1.l10n.ParseException;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
 import com.codename1.ui.Display;
@@ -29,6 +30,7 @@ import com.codename1.ui.util.Resources;
 
 
 import java.util.ArrayList;
+
 import utils.SessionUser;
 
 /**
@@ -37,6 +39,7 @@ import utils.SessionUser;
  */
 public class AffichageCommande {
                     FosUser fu = new FosUser(3);
+                    Form previous;
 
   /*  public static String adrm;
     public static String adr2m;
@@ -80,9 +83,16 @@ public class AffichageCommande {
             //  AfficherLigneWishlist affw = new AfficherLigneWishlist(fu.getId());
             //  AfficherPanier affp = new AfficherPanier().getF();
         tb.addMaterialCommandToSideMenu("Panier", FontImage.MATERIAL_ADD_A_PHOTO, e->{new AfficherPanier().getF().show();});
-        //tb.addMaterialCommandToSideMenu("Wishlist", FontImage.MATERIAL_AC_UNIT, e->{new AfficherLigneWishlist(fu.getId()).getF().show();});
-      //  ArrayList<Commande> lstC = cs.getCommandes(SessionUser.getUser().getId());
+       tb.addMaterialCommandToSideMenu("Products", FontImage.MATERIAL_AC_UNIT, e->{try {
+           new ListVeloc(previous).show();
+            } catch (Exception IOE) {
+              System.out.println("er");
+            }
+});
+    //  ArrayList<Commande> lstC = cs.getCommandes(SessionUser.getUser().getId());
+    
    //ArrayList<Commande> lstC = cs.getCommandes(SessionUser.getUser().getId());
+   
       ArrayList<Commande> lstC = cs.getCommandes(21);
         for (Commande c : lstC) {
 
@@ -128,7 +138,7 @@ public class AffichageCommande {
                     System.out.println("size : " + lstlcp.size());
                     for (LigneDeCommandeProduit lcp : lstlcp) {
                         btnModif = new Button("Modifier");
-                        Label l1 = new Label("Produit : " + lcp.getLibelle());
+                        Label l1 = new Label("Produit : " + lcp.getDescription());
                         createForFont(smallBoldSystemFont, l1.getText());
                         //System.out.println(l1);
                         accr.addContent(l1, BoxLayout.encloseY(

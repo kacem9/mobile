@@ -44,8 +44,15 @@ public abstract class SideMenuBaseForm extends Form {
         
         //getToolbar().addMaterialCommandToSideMenu("  Evenements", FontImage.MATERIAL_DASHBOARD,  e -> showEventForm(res));
    //     getToolbar().addMaterialCommandToSideMenu("  Velos", FontImage.MATERIAL_DIRECTIONS_BIKE,  e -> showVelosForm(res));
-        getToolbar().addMaterialCommandToSideMenu("  Locations", FontImage.MATERIAL_DIRECTIONS_BIKE,  e -> showLocationsForm(res));
-     //   getToolbar().addMaterialCommandToSideMenu("  Reclamations", FontImage.MATERIAL_ACCESS_TIME,  e -> showReclamationsForm(res));
+       
+   
+   getToolbar().addMaterialCommandToSideMenu("  Locations", FontImage.MATERIAL_DIRECTIONS_BIKE,  e -> showLocationsForm(res));
+                getToolbar().addMaterialCommandToSideMenu("orders", FontImage.MATERIAL_AC_UNIT, e->{new AffichageCommande().getF().show();});
+                            getToolbar().addMaterialCommandToSideMenu("Card", FontImage.MATERIAL_AC_UNIT, e->{new AfficherPanier().getF().show();});
+                 //     getToolbar().addMaterialCommandToSideMenu("Home", FontImage.MATERIAL_AC_UNIT, e-> ProfileFormv(res));
+   
+//  getToolbar().addMaterialCommandToSideMenu("  Locations", FontImage.MATERIAL_DIRECTIONS_BIKE,  e -> showLocationsForm(res));
+        //   getToolbar().addMaterialCommandToSideMenu("  Reclamations", FontImage.MATERIAL_ACCESS_TIME,  e -> showReclamationsForm(res));
        // getToolbar().addMaterialCommandToSideMenu(" Reparations ", FontImage.MATERIAL_SETTINGS,  e -> showReparationsForm(res));
         getToolbar().addMaterialCommandToSideMenu("  Logout", FontImage.MATERIAL_EXIT_TO_APP,  e -> new LoginForm(res).show());
     }

@@ -74,7 +74,8 @@ public class ListVelos extends Form {
                    add(c2);
             ImageViewer iv = new ImageViewer();
             System.out.println(lis.get(i).getPhoto());
-            Image placeholder = Image.createImage(this.getWidth() / 3 - 3, this.getWidth() / 3- 3, 0xbfc9d2);
+          //   Image placeholder = Image.createImage(this.getWidth() / 3 - 4, this.getWidth() / 3 - 4, 0xbfc9d2);
+           Image placeholder = Image.createImage(this.getWidth() / 3 - 3, this.getWidth() / 3- 3, 0xbfc9d2);
             EncodedImage encImage = EncodedImage.createFromImage(placeholder, false);
            //  img = Image.createImage(FileSystemStorage.getInstance().openInputStream(path))
             ImageViewer img1 = new ImageViewer(URLImage.createToStorage(encImage, "file" + lis.get(i).getPhoto(),

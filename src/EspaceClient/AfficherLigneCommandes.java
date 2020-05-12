@@ -42,20 +42,12 @@ public class AfficherLigneCommandes {
         System.out.println(id);
         System.out.println(lstlcp);
         for (LigneDeCommandeProduit lcp : lstlcp) {
-                    btnModif = new Button("Modifier");
+        
 
-            Label l1 = new Label(lcp.getLibelle() + " " + lcp.getDescription());
+            Label l1 = new Label(lcp.getLibelle() + " " + lcp.getDescription()+""+lcp.getIdLigneDeCommande());
             accr.addContent(l1, new SpanLabel(lcp.getAdresse() + " " + lcp.getAdresse2()));
             System.out.println("add" + lcp.getAdresse());
-btnModif.addActionListener(new ActionListener() {
 
-                        @Override
-                        public void actionPerformed(ActionEvent evt) {
-                            X = 1;
-                       AjoutCommandeForm acf = new AjoutCommandeForm();
-                       
-                        }
-                    });
         }
 
         f.add(BorderLayout.CENTER, accr);
