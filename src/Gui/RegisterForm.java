@@ -66,10 +66,10 @@ public class RegisterForm extends Form {
 
     private boolean testTel;
     private boolean testcode;
-   public static FosUser ip;
-    final DefaultListModel<String> options = new DefaultListModel<>();
+    private boolean testnom;
 
-  
+    private static final String apiKey = "AIzaSyA4N1uhqDRC55eqZ3ZrJ9S_OQ3nL4vPYKg";
+    final DefaultListModel<String> options = new DefaultListModel<>();
 
     public RegisterForm(Resources theme) {
 
@@ -117,6 +117,7 @@ public class RegisterForm extends Form {
         Label posteIcon = new Label("", "WelcomeBlack");
         Label codeIcon = new Label("", "WelcomeBlack");
         Label photoIcon = new Label("", "WelcomeBlack");
+        Label adIcon = new Label("", "WelcomeBlack");
         loginIcon.getAllStyles().setMargin(RIGHT, 0);
         passwordIcon.getAllStyles().setMargin(RIGHT, 0);
         //--------------------------------------------------------------------------------------------  
@@ -137,10 +138,11 @@ public class RegisterForm extends Form {
         FontImage.setMaterialIcon(posteIcon, FontImage.MATERIAL_WORK_OUTLINE, 3);
         FontImage.setMaterialIcon(codeIcon, FontImage.MATERIAL_RECENT_ACTORS, 3);
         FontImage.setMaterialIcon(photoIcon, FontImage.MATERIAL_ADD_A_PHOTO, 3);
+        FontImage.setMaterialIcon(adIcon, FontImage.MATERIAL_HOME_WORK, 3);
         //--------------------------------------------------------------------------------------------  
-  
-        TextField Adresse = new TextField();
-        Adresse.setHint("Adresse");
+
+        /*  TextField Adresse = new TextField();
+        Adresse.setHint("Adresse");*/
         TextField poste = new TextField();
         poste.setHint("poste");
         TextField nom = new TextField();
@@ -169,6 +171,29 @@ public class RegisterForm extends Form {
         ImageViewer i = new ImageViewer();
         Button imgBtn = new Button("parcourir");
 
+        AutoCompleteTextField Adresse = new AutoCompleteTextField(options) {
+            @Override
+            protected boolean filter(String text) {
+                if (text.length() == 0) {
+                    return false;
+                }
+                String[] l = searchLocations(text);
+                if (l == null || l.length == 0) {
+                    return false;
+                }
+
+                options.removeAll();
+                for (String s : l) {
+                    options.addItem(s);
+                }
+                return true;
+            }
+        };
+        Adresse.setMinimumElementsShownInPopup(5);
+        Adresse.setHint("Adresse");
+        /**
+         * **********************************controle de saisie*******************************************
+         */
         code_postal.addDataChangedListener((e, k) -> {
             RE r = new RE("([0-9]+(\\.[0-9]+)?)+");
 
@@ -177,6 +202,66 @@ public class RegisterForm extends Form {
                 testcode = false;
             } else {
                 testcode = true;
+            }
+        });
+      /*  nom.addDataChangedListener((e, k) -> {
+            RE r = new RE("^[a-zA-Z]+$");
+
+            if (!r.match(nom.getText())) {
+                Dialog.show("Alerte", "Le champ nom doit etre de type caractère", "Ok", null);
+                testnom = false;
+            } else {
+                testnom = true;
+            }
+        });
+        prenom.addDataChangedListener((e, k) -> {
+            RE r = new RE("^[a-zA-Z]+$");
+
+            if (!r.match(nom.getText())) {
+                Dialog.show("Alerte", "Le champ prenom doit etre de type caractère", "Ok", null);
+                testnom = false;
+            } else {
+                testnom = true;
+            }
+        });
+        username.addDataChangedListener((e, k) -> {
+            RE r = new RE("^[a-zA-Z]+$");
+
+            if (!r.match(nom.getText())) {
+                Dialog.show("Alerte", "Le champ username doit etre de type caractère", "Ok", null);
+                testnom = false;
+            } else {
+                testnom = true;
+            }
+        });
+        Pays.addDataChangedListener((e, k) -> {
+            RE r = new RE("^[a-zA-Z]+$");
+
+            if (!r.match(nom.getText())) {
+                Dialog.show("Alerte", "Le champ pays doit etre de type caractère", "Ok", null);
+                testnom = false;
+            } else {
+                testnom = true;
+            }
+        });
+        Ville.addDataChangedListener((e, k) -> {
+            RE r = new RE("^[a-zA-Z]+$");
+
+            if (!r.match(nom.getText())) {
+                Dialog.show("Alerte", "Le champ ville doit etre de type caractère", "Ok", null);
+                testnom = false;
+            } else {
+                testnom = true;
+            }
+        });*/
+        poste.addDataChangedListener((e, k) -> {
+            RE r = new RE("^[a-zA-Z]+$");
+
+            if (!r.match(nom.getText())) {
+                Dialog.show("Alerte", "Le champ poste doit etre de type caractère", "Ok", null);
+                testnom = false;
+            } else {
+                testnom = true;
             }
         });
         cin.addDataChangedListener((e, k) -> {
@@ -199,6 +284,10 @@ public class RegisterForm extends Form {
                 testTel = true;
             }
         });
+        /**
+         * **********************************controle de saisie*******************************************
+         */
+
         TextField tfimage = new TextField("", "Veuillez saisir l'url de votre image");
         imgBtn.addActionListener(e -> {
             Display.getInstance().openGallery(new ActionListener() {
@@ -268,14 +357,14 @@ public class RegisterForm extends Form {
                 spaceLabel,
                 BorderLayout.center(username).
                         add(BorderLayout.WEST, loginIcon),
+                BorderLayout.center(Adresse).
+                        add(BorderLayout.WEST, adIcon),
                 BorderLayout.center(password).
                         add(BorderLayout.WEST, passwordIcon),
                 BorderLayout.center(tel).
                         add(BorderLayout.WEST, telIcon),
                 BorderLayout.center(email).
                         add(BorderLayout.WEST, emailIcon),
-                BorderLayout.center(Adresse).
-                        add(BorderLayout.WEST, adresseIcon),
                 BorderLayout.center(nom).
                         add(BorderLayout.WEST, nomIcon),
                 BorderLayout.center(prenom).
@@ -325,4 +414,29 @@ public class RegisterForm extends Form {
         return matcher;
     }
 
+    public static boolean isString(String s) {
+        RE r = new RE("^[a-zA-Z]+$");
+        boolean matcher = r.match(s);
+        return matcher;
+
+    }
+
+    String[] searchLocations(String text) {
+        try {
+            if (text.length() > 0) {
+                ConnectionRequest r = new ConnectionRequest();
+                r.setPost(false);
+                r.setUrl("https://maps.googleapis.com/maps/api/place/autocomplete/json");
+                r.addArgument("key", apiKey);
+                r.addArgument("input", text);
+                NetworkManager.getInstance().addToQueueAndWait(r);
+                Map<String, Object> result = new JSONParser().parseJSON(new InputStreamReader(new ByteArrayInputStream(r.getResponseData()), "UTF-8"));
+                String[] res = Result.fromContent(result).getAsStringArray("//description");
+                return res;
+            }
+        } catch (Exception err) {
+            Log.e(err);
+        }
+        return null;
+    }
 }

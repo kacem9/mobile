@@ -1,6 +1,7 @@
 package com.mycompany.myapp;
 
 
+
 import Gui.LoginForm;
 import View.HomeForm;
 import com.codename1.io.ConnectionRequest;
@@ -53,6 +54,7 @@ public class MyApplication {
     public void start() {
         
         new LoginForm(theme).show();
+        
     } 
 
     public void stop() {

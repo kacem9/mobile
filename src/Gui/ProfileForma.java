@@ -36,6 +36,7 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.layouts.LayeredLayout;
+import com.codename1.ui.list.DefaultListModel;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
 import utils.SessionUser;
@@ -45,7 +46,8 @@ import utils.SessionUser;
  * @author root
  */
 public class ProfileForma extends SideMenuBaseForma {
-
+ private static final String apiKey = "AIzaSyA4N1uhqDRC55eqZ3ZrJ9S_OQ3nL4vPYKg";
+    final DefaultListModel<String> options = new DefaultListModel<>();
     public ProfileForma(FosUser u, Resources res) {
         super(BoxLayout.y());
         Toolbar tb = getToolbar();
@@ -78,6 +80,7 @@ public class ProfileForma extends SideMenuBaseForma {
         Button valider = new Button("valider");
         valider.setVisible(false);
 
+        
         Button update = new Button("update");
         menuButton.setUIID("Title");
         FontImage.setMaterialIcon(menuButton, FontImage.MATERIAL_MENU);
@@ -159,7 +162,7 @@ public class ProfileForma extends SideMenuBaseForma {
         this.add(update);
         this.add(valider);
 
-        // setupSideMenu(res);
+         setupSideMenu(res);
         /* Image img = res.getImage("profile-background.jpg");
         if(img.getHeight() > Display.getInstance().getDisplayHeight() / 3) {
             img = img.scaledHeight(Display.getInstance().getDisplayHeight() / 3);

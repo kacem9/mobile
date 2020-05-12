@@ -61,7 +61,7 @@ public class LoginForm extends Form {
 
         Button loginButton = new Button("LOGIN");
         loginButton.setUIID("LoginButton");
-        Button forgot = new Button("forgot password");
+       
         /* loginButton.addActionListener(e -> {
             new ProfileForm(theme).show();
         });*/
@@ -130,21 +130,21 @@ public class LoginForm extends Form {
 
                                 if ((e.getRoles().equals("[" + "VENDEUR, ROLE_USER" + "]"))) {
                                     // u = e;
-                                    new ProfileFormv(e).show();
+                                    new ProfileFormv(e,theme).show();
 
                                 } else if ((e.getRoles().equals("[" + "CHEF, ROLE_USER" + "]"))) {
                                     //u = e;
 
-                                    new ProfileFormc(e).show();
+                                    new ProfileFormc(e,theme).show();
                                 } else if ((e.getRoles().equals("[" + "ACHTEUR, ROLE_USER" + "]"))) {
-                                    Resources res = null;
+                                 
                                     //u = e;
 
-                                    new ProfileForma(e, res).show();
+                                    new ProfileForma(e, theme).show();
                                 } else if ((e.getRoles().equals("[" + "REPARATEUR, ROLE_USER" + "]"))) {
                                     //u = e;
 
-                                    new ProfileFormr(e).show();
+                                    new ProfileFormr(e,theme).show();
                                 }
 
                                 i = true;
@@ -167,9 +167,7 @@ public class LoginForm extends Form {
         createNewAccount.addActionListener(e -> {
             new RegisterForm(theme).show();
         });
-        forgot.addActionListener(e -> {
-
-        });
+    
         // We remove the extra space for low resolution devices so things fit better
         Label spaceLabel;
         if (!Display.getInstance().isTablet() && Display.getInstance().getDeviceDensity() < Display.DENSITY_VERY_HIGH) {
@@ -185,7 +183,7 @@ public class LoginForm extends Form {
                 BorderLayout.center(password).
                         add(BorderLayout.WEST, passwordIcon),
                 loginButton,
-                forgot,
+               
                 createNewAccount
         );
         add(BorderLayout.CENTER, by);

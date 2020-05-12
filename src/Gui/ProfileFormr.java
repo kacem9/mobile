@@ -12,9 +12,13 @@ import com.codename1.components.ImageViewer;
 import com.codename1.components.MultiButton;
 import com.codename1.components.ScaleImageLabel;
 import com.codename1.io.ConnectionRequest;
+import com.codename1.io.JSONParser;
+import com.codename1.io.Log;
 import static com.codename1.io.Log.e;
 import com.codename1.io.NetworkEvent;
 import com.codename1.io.NetworkManager;
+import com.codename1.processing.Result;
+import com.codename1.ui.AutoCompleteTextField;
 import com.codename1.ui.Button;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
@@ -35,8 +39,12 @@ import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.layouts.GridLayout;
 import com.codename1.ui.layouts.LayeredLayout;
+import com.codename1.ui.list.DefaultListModel;
 import com.codename1.ui.plaf.Style;
 import com.codename1.ui.util.Resources;
+import java.io.ByteArrayInputStream;
+import java.io.InputStreamReader;
+import java.util.Map;
 import utils.SessionUser;
 
 /**
@@ -44,8 +52,9 @@ import utils.SessionUser;
  * @author root
  */
 public class ProfileFormr extends SideMenuBaseForma {
-
-    public ProfileFormr(FosUser u) {
+ private static final String apiKey = "AIzaSyA4N1uhqDRC55eqZ3ZrJ9S_OQ3nL4vPYKg";
+    final DefaultListModel<String> options = new DefaultListModel<>();
+    public ProfileFormr(FosUser u,Resources res) {
         super(BoxLayout.y());
         Toolbar tb = getToolbar();
         tb.setTitleCentered(false);
@@ -62,10 +71,10 @@ public class ProfileFormr extends SideMenuBaseForma {
         TextField tel = new TextField();
         tel.setEditable(false);
         tel.setText(u.getNum_tel());
-        Label Adresse =new Label("Adresse");
-        TextField adresse = new TextField();
+        Label adresse =new Label("Adresse");
+        /*TextField adresse = new TextField();
         adresse.setEditable(false);
-        adresse.setText(u.getAdresse());
+        adresse.setText(u.getAdresse());*/
         Label Username =new Label("Username");
         TextField username = new TextField();
         username.setEditable(false);
@@ -77,7 +86,27 @@ public class ProfileFormr extends SideMenuBaseForma {
         Button menuButton = new Button("");
         Button valider = new Button("valider");
         valider.setVisible(false);
+  AutoCompleteTextField Adresse = new AutoCompleteTextField(options) {
+            @Override
+            protected boolean filter(String text) {
+                if (text.length() == 0) {
+                    return false;
+                }
+                String[] l = searchLocations(text);
+                if (l == null || l.length == 0) {
+                    return false;
+                }
 
+                options.removeAll();
+                for (String s : l) {
+                    options.addItem(s);
+                }
+                return true;
+            }
+        };
+        Adresse.setMinimumElementsShownInPopup(5);
+        Adresse.setEditable(false);
+        Adresse.setText(u.getAdresse());
         Button update = new Button("update");
         menuButton.setUIID("Title");
         FontImage.setMaterialIcon(menuButton, FontImage.MATERIAL_MENU);
@@ -101,7 +130,7 @@ public class ProfileFormr extends SideMenuBaseForma {
             email.setEditable(true);
             prenom.setEditable(true);
             tel.setEditable(true);
-            adresse.setEditable(true);
+            Adresse.setEditable(true);
             username.setEditable(true);
             update.setVisible(false);
             valider.setVisible(true);
@@ -132,7 +161,7 @@ public class ProfileFormr extends SideMenuBaseForma {
                             nom.setEditable(false);
                             email.setEditable(false);
                             prenom.setEditable(false);
-                            adresse.setEditable(false);
+                            Adresse.setEditable(false);
                             tel.setEditable(false);
                             username.setEditable(false);
                         }
@@ -159,7 +188,7 @@ public class ProfileFormr extends SideMenuBaseForma {
         this.add(update);
         this.add(valider);
 
-        // setupSideMenu(res);
+         setupSideMenu(res);
         /* Image img = res.getImage("profile-background.jpg");
         if(img.getHeight() > Display.getInstance().getDisplayHeight() / 3) {
             img = img.scaledHeight(Display.getInstance().getDisplayHeight() / 3);
@@ -245,5 +274,23 @@ public class ProfileFormr extends SideMenuBaseForma {
     @Override
     protected void showReparationsForm(Resources res) {
         new ReparationsForm(res).show();
+    }
+       String[] searchLocations(String text) {
+        try {
+            if (text.length() > 0) {
+                ConnectionRequest r = new ConnectionRequest();
+                r.setPost(false);
+                r.setUrl("https://maps.googleapis.com/maps/api/place/autocomplete/json");
+                r.addArgument("key", apiKey);
+                r.addArgument("input", text);
+                NetworkManager.getInstance().addToQueueAndWait(r);
+                Map<String, Object> result = new JSONParser().parseJSON(new InputStreamReader(new ByteArrayInputStream(r.getResponseData()), "UTF-8"));
+                String[] res = Result.fromContent(result).getAsStringArray("//description");
+                return res;
+            }
+        } catch (Exception err) {
+            Log.e(err);
+        }
+        return null;
     }
 }
