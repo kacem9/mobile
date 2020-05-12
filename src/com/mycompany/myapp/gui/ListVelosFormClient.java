@@ -106,7 +106,7 @@ String url="http://localhost/VeloSymfonyIntegre/Velo/web/uploads/admin/"+p.getPh
                     
                     Label ps = new Label("Velo N° "+nb+" :");
                     ps.getAllStyles().set3DText(true, true);
-                    ps.getAllStyles().setFgColor(ColorUtil.rgb(255, 0, 0));
+                    ps.getAllStyles().setFgColor(ColorUtil.rgb(30,144,255));
                     
 
                     //line2.add(ageLabel);
@@ -125,7 +125,13 @@ String url="http://localhost/VeloSymfonyIntegre/Velo/web/uploads/admin/"+p.getPh
         ImageViewer img = new ImageViewer(background);
                     line2.add(img);
                     Button b = new Button("Add to Panier");
-                    line2.add(b);
+                    
+                    FontImage.setMaterialIcon(b, FontImage.MATERIAL_ADD_SHOPPING_CART);
+          
+         
+          b.getUnselectedStyle().setBgTransparency(255);
+        b.getStyle().setMargin(50, 50, 10, 10);
+        line2.add(b);
                      b.addActionListener((evt) -> {
                    
                     
@@ -136,7 +142,12 @@ String url="http://localhost/VeloSymfonyIntegre/Velo/web/uploads/admin/"+p.getPh
                     
                 });
                      
-                      Button b1 = new Button("Comment ");
+                      Button b1 = new Button("");
+                       FontImage.setMaterialIcon(b1, FontImage.MATERIAL_COMMENT);
+          
+         
+          b1.getUnselectedStyle().setBgTransparency(255);
+        b1.getStyle().setMargin(50, 50, 70, 70);
                     line2.add(b1);
                      b1.addActionListener((evt) -> {
                    
@@ -148,7 +159,13 @@ String url="http://localhost/VeloSymfonyIntegre/Velo/web/uploads/admin/"+p.getPh
                     
                 });
                      
-                        Button b2 = new Button("Add to wishlist ");
+                        Button b2 = new Button("");
+                         
+                       FontImage.setMaterialIcon(b2, FontImage.MATERIAL_EMOJI_EMOTIONS);
+          
+         
+          b2.getUnselectedStyle().setBgTransparency(255);
+        b2.getStyle().setMargin(50, 50, 70, 70);
                     line2.add(b2);
                      b2.addActionListener((ActionEvent evt) -> {
     

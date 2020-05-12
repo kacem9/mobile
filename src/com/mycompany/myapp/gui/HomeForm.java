@@ -43,6 +43,27 @@ Form current;
          Button btnAddVelos = new Button("Add Velo");
          Button btnStat = new Button("Statistics");        
          Button btnShow = new Button(" Show Statistics");
+         
+         FontImage.setMaterialIcon(btnListvelos, FontImage.MATERIAL_DIRECTIONS_BIKE);
+          FontImage.setMaterialIcon(btnListcmd, FontImage.MATERIAL_GRID_VIEW);
+          FontImage.setMaterialIcon(btnAddCmd, FontImage.MATERIAL_ADD_CIRCLE_OUTLINE);
+             FontImage.setMaterialIcon(btnAddVelos, FontImage.MATERIAL_ADD_CIRCLE_OUTLINE);
+               FontImage.setMaterialIcon(btnStat, FontImage.MATERIAL_INSERT_CHART);
+                FontImage.setMaterialIcon(btnShow, FontImage.MATERIAL_GRID_VIEW);
+          
+         
+          btnAddCmd.getUnselectedStyle().setBgTransparency(255);
+        btnAddCmd.getStyle().setMargin(50, 50, 70, 70);
+        btnListcmd.getUnselectedStyle().setBgTransparency(255);
+        btnListcmd.getStyle().setMargin(50, 50, 70, 70);
+        btnListvelos.getUnselectedStyle().setBgTransparency(255);
+        btnListvelos.getStyle().setMargin(50, 50, 70, 70);
+         btnAddVelos.getUnselectedStyle().setBgTransparency(255);
+        btnAddVelos.getStyle().setMargin(50, 50, 70, 70);
+         btnStat.getUnselectedStyle().setBgTransparency(255);
+        btnStat.getStyle().setMargin(50, 50, 70, 70);
+         btnShow.getUnselectedStyle().setBgTransparency(255);
+        btnShow.getStyle().setMargin(50, 50, 70, 70);
         
          btnAddCmd.addActionListener(e->new AddCommandeForm(current).show());
       //  btnAddTask.addActionListener(e-> new AddTaskForm(current).show());

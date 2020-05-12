@@ -118,7 +118,9 @@ SideMenuBaseForm current;
                 n,
                 System.currentTimeMillis() + 10 * 1000, // fire date/time
                 LocalNotification.REPEAT_MINUTE  // Whether to repeat and what frequency
-        ); });
+        ); 
+        new PanierClient(current).show();
+        });
         btnWishList .addActionListener(e-> new ListVelosWishClient(current).show());
          btnListvelos .addActionListener(e-> new ListVelosFormClient(current).show());
          // btnAddVelos .addActionListener(e-> new AddVeloForm(current).show());

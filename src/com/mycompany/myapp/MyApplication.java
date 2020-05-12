@@ -56,8 +56,8 @@ public class MyApplication implements PushCallback{
     public void start() {
         
     
-       //    new HomeForm().show();
-    new HomeFormClient(theme).show();
+       //   new HomeForm().show();
+     new HomeFormClient(theme).show();
         
     }
 

@@ -113,6 +113,11 @@ ArrayList<Commande>comands = ServiceCommande.getInstance().getAllCommandes();
                     line2.add(adresse3);
                     line2.add(ageLabel2);
                     Button b = new Button("Supprimer");
+                     FontImage.setMaterialIcon(b, FontImage.MATERIAL_DELETE);
+          
+         
+          b.getUnselectedStyle().setBgTransparency(255);
+        b.getStyle().setMargin(50, 50, 70, 70);
                     line2.add(b);
                      b.addActionListener((evt) -> {
                    

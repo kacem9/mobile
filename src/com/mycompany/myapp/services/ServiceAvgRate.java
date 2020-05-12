@@ -13,6 +13,7 @@ import com.codename1.io.NetworkManager;
 import com.codename1.ui.events.ActionListener;
 import com.mycompany.myapp.entities.Commande;
 import com.mycompany.myapp.entities.Comment;
+import com.mycompany.myapp.entities.RateAvg;
 
 
 import com.mycompany.myapp.utils.Statics;
@@ -26,24 +27,24 @@ import java.util.Map;
  *
  * @author bhk
  */
-public class ServiceComment {
+public class ServiceAvgRate {
 
-    public ArrayList<Comment> Counts;
+    public ArrayList<RateAvg> Counts;
     
-    public static ServiceComment instance=null;
+    public static ServiceAvgRate instance=null;
     public boolean resultOK;
     private ConnectionRequest req;
     private Comment t;
     private String cmd;
 
-    private ServiceComment() {
+    private ServiceAvgRate() {
          req = new ConnectionRequest();
         
     }
 
-    public static ServiceComment getInstance() {
+    public static ServiceAvgRate getInstance() {
         if (instance == null) {
-            instance = new ServiceComment();
+            instance = new ServiceAvgRate();
         }
         return instance;
     }
@@ -51,19 +52,19 @@ public class ServiceComment {
        //localhost/VeloSymfonyIntegre/Velo/web/app_dev.php/api/LigneDeCommande/new?prixTotal=100&adresse2=ttttttttttttt&adresse=hhhhhhhhhhhh&ville=tunis&codePostal=20&numTel=5520520&dateLivraison=2020-05-06&quantite=51
     
     
-    public boolean addComment(int id_user,int id_prod, String comment,String DatePublication,String Rate) {
-       String url = "http://localhost/connChermiti/connect.php?id_user="+id_user+"&comment="+comment+"&datePublication="+DatePublication+"&Rate="+Rate+"&id_Prod="+id_prod+"";
-       req.setUrl(url);
-    req.addResponseListener(new ActionListener<NetworkEvent>() {
-           @Override
-         public void actionPerformed(NetworkEvent evt) {
-             resultOK = req.getResponseCode() == 200; //Code HTTP 200 OK
-              req.removeResponseListener(this);
-          }
-      });
-      NetworkManager.getInstance().addToQueueAndWait(req);
-       return resultOK;
-   }
+//    public boolean addComment(int id_user,int id_prod, String comment,String DatePublication,String Rate) {
+//       String url = "http://localhost/connChermiti/connect.php?id_user="+id_user+"&comment="+comment+"&datePublication="+DatePublication+"&Rate="+Rate+"&id_Prod="+id_prod+"";
+//       req.setUrl(url);
+//    req.addResponseListener(new ActionListener<NetworkEvent>() {
+//           @Override
+//         public void actionPerformed(NetworkEvent evt) {
+//             resultOK = req.getResponseCode() == 200; //Code HTTP 200 OK
+//              req.removeResponseListener(this);
+//          }
+//      });
+//      NetworkManager.getInstance().addToQueueAndWait(req);
+//       return resultOK;
+//   }
 
     
 //     public boolean deleteComment(int id) {
@@ -83,24 +84,26 @@ public class ServiceComment {
     
     
      
-    public ArrayList<Comment> parseComment(String jsonText){
+    public ArrayList<RateAvg> parseRate(String jsonText){
         try {
             Counts=new ArrayList<>();
             JSONParser j = new JSONParser();
             Map<String,Object> tasksListJson = j.parseJSON(new CharArrayReader(jsonText.toCharArray()));
             
-            List<Map<String,Object>> list = (List<Map<String,Object>>)tasksListJson.get("Comment");
+            List<Map<String,Object>> list = (List<Map<String,Object>>)tasksListJson.get("root");
             
        
             for(Map<String,Object> obj : list){
              
                      // Comment t = new Comment();
-                     Comment t = new Comment();   
-         t.setPhoto(obj.get("photo").toString());
+                     RateAvg t = new RateAvg();   
+         //t.setPhoto(obj.get("photo").toString());
                 float value = Float.parseFloat(obj.get("id").toString());
                 t.setId((int)value);
-                t.setComment(obj.get("comment").toString());
-                 t.setDatePublication((obj.get("datePublication").toString()));
+                
+                t.setAvgRate(Float.parseFloat(obj.get("avrage rate").toString()));
+                t.setNbComment((int)Float.parseFloat(obj.get("avrage rate").toString()));
+                
                 
                
               //  t.setDateLivraison((obj.get("datelivraison").toString()));
@@ -129,15 +132,15 @@ public class ServiceComment {
         return Counts;
     }
     
-    public ArrayList<Comment> findProd(int id){
-        String url = Statics.BASE_URL+"/show_comment_velo/"+id;
+    public ArrayList<RateAvg> findProd(int id){
+        String url ="http://localhost/connChermiti/connectAVG.php?id_Prod="+id;
         req.setUrl(url);
         req.setPost(false);
         req.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override
             public void actionPerformed(NetworkEvent evt) {
                 
-                Counts = parseComment(new String(req.getResponseData()));
+                Counts = parseRate(new String(req.getResponseData()));
                
                  
                

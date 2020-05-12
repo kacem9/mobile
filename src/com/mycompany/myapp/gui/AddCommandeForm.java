@@ -45,6 +45,11 @@ public class AddCommandeForm extends Form{
        TextField tfquantite= new TextField("", "quantite");
         
        Button btnValider = new Button("Add commande");
+        FontImage.setMaterialIcon(btnValider, FontImage.MATERIAL_ADD);
+          
+         
+          btnValider.getUnselectedStyle().setBgTransparency(255);
+        btnValider.getStyle().setMargin(50, 50, 70, 70);
                btnValider.addActionListener(new ActionListener() {
           @Override
           public void actionPerformed(ActionEvent evt) {

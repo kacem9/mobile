@@ -119,6 +119,11 @@ String url="http://localhost/VeloSymfonyIntegre/Velo/web/uploads/admin/"+p.getPh
         ImageViewer img = new ImageViewer(background);
                     line2.add(img);
                     Button b = new Button("Supprimer");
+                     FontImage.setMaterialIcon(b, FontImage.MATERIAL_DELETE);
+          
+         
+          b.getUnselectedStyle().setBgTransparency(255);
+        b.getStyle().setMargin(50, 50, 70, 70);
                     line2.add(b);
                      b.addActionListener((evt) -> {
                    

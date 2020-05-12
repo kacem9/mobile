@@ -39,6 +39,7 @@ import com.mycompany.myapp.entities.Produit;
 import com.mycompany.myapp.entities.Velo;
 import com.mycompany.myapp.entities.Wish;
 import com.mycompany.myapp.services.ServiceComment;
+import com.mycompany.myapp.services.ServicePanier;
 import com.mycompany.myapp.services.ServiceProduit;
 
 import com.mycompany.myapp.services.ServiceVelo;
@@ -47,6 +48,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 import java.util.ArrayList;
+
 
 
 
@@ -130,9 +132,9 @@ String url="http://localhost/VeloSymfonyIntegre/Velo/web/uploads/admin/"+p.getPh
 
                     //Label ageLabel4 = new Label(p.getDateLivraison());
                     
-                    Label ps = new Label("Velo N° "+nb+" :");
+                    Label ps = new Label("Product N° "+nb+" :");
                     ps.getAllStyles().set3DText(true, true);
-                    ps.getAllStyles().setFgColor(ColorUtil.rgb(255, 0, 0));
+                    ps.getAllStyles().setFgColor(ColorUtil.rgb(30,144,255));
                     
 
                     //line2.add(ageLabel);
@@ -153,19 +155,40 @@ String url="http://localhost/VeloSymfonyIntegre/Velo/web/uploads/admin/"+p.getPh
         
         ImageViewer img = new ImageViewer(background);
                     line2.add(img);
+                    
                     Button b = new Button("Add to Panier");
+                     FontImage.setMaterialIcon(b, FontImage.MATERIAL_ADD_SHOPPING_CART);
+          
+         
+          b.getUnselectedStyle().setBgTransparency(255);
+        b.getStyle().setMargin(20, 20, 30, 30);
                     line2.add(b);
                      b.addActionListener((evt) -> {
-                   
+                         if(p.getQuantity().equals("0")){
+                             Dialog.show("Can't add Article","Product is out of stock",new Command("OK"));
+                         }else{
+                             
+                         
+                   int qunt=Integer.parseInt(p.getQuantity());
+                   int prix=Integer.parseInt(p.getPrice());
                     
-                      ServiceVelo.getInstance().deleteVelo(p.getId()); 
-                           Dialog.show("Success","Commande added",new Command("OK"));
+    try {
+        ServicePanier.getInstance().addToPanier(p.getId(), 15,qunt, p.getModel(), p.getPhoto(),prix);
+    } catch (IOException ex) {
+        Dialog.show("error","Product not added",new Command("OK"));
+    }
+                           Dialog.show("Success","Product added",new Command("OK"));
                   
                
                     
-                });
+                         } });
                      
-                      Button b1 = new Button("Comment ");
+                      Button b1 = new Button("");
+                       FontImage.setMaterialIcon(b1, FontImage.MATERIAL_COMMENT);
+          
+         
+          b1.getUnselectedStyle().setBgTransparency(255);
+        b1.getStyle().setMargin(20, 20, 30, 30);
                     line2.add(b1);
                      b1.addActionListener((evt) -> {
                          new ListProdComment(previous,p.getId()).show();
@@ -185,6 +208,12 @@ String url="http://localhost/VeloSymfonyIntegre/Velo/web/uploads/admin/"+p.getPh
                 });
                      
                      ShareButton sb = new ShareButton();
+                     FontImage.setMaterialIcon(sb, FontImage.MATERIAL_SHARE);
+          
+         
+          sb.getUnselectedStyle().setBgTransparency(255);
+          sb.getAllStyles().setFgColor(ColorUtil.rgb(30,144,255));
+        sb.getStyle().setMargin(20, 20, 30, 30);
                      
 //                     sb.setImageToShare(p.getPhoto(), "image/png");
 //                     FaceBookAccess.setClientId("124a41af3060e90190aa83b489253f34");
@@ -209,13 +238,18 @@ element.paintComponent(screenshot.getGraphics(), true);
                           // Dialog.show("Success","Commande added",new Command("OK"));
                  });       
                
-                        Button b2 = new Button("Add to wishlist ");
+                        Button b2 = new Button("");
+                         FontImage.setMaterialIcon(b2, FontImage.MATERIAL_EMOJI_EMOTIONS);
+          
+         
+          b2.getUnselectedStyle().setBgTransparency(255);
+        b2.getStyle().setMargin(20, 20, 30, 30);
                     line2.add(b2);
                      b2.addActionListener((ActionEvent evt) -> {
     
    try { 
         ServiceWish.getInstance().addToWish(p.getId(),15, p.getModel(), p.getPhoto());
-        Dialog.show("Success","Commande added",new Command("OK"));
+        Dialog.show("Success","Added to wishlist",new Command("OK"));
         ArrayList<Wish>xD=ServiceWish.getInstance().getAllwish();
    for(Wish e:xD)
                             System.out.println(e);
