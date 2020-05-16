@@ -95,7 +95,7 @@ public class ProfileForma extends SideMenuBaseForma {
 
         EncodedImage placeholder = EncodedImage.createFromImage(Image.createImage(300, 500, 0xffff0000), true);
         URLImage img_user = URLImage.createToStorage(placeholder, u.getPhoto() + ".cache",
-                "http://localhost/Velo//web//uploads//admin//" + u.getPhoto());
+                "http://localhost/symfony/Velo//web//uploads//admin//" + u.getPhoto());
 
         ImageViewer imgUser = new ImageViewer();
         imgUser.setImage(img_user);
@@ -114,7 +114,7 @@ public class ProfileForma extends SideMenuBaseForma {
 
             public void actionPerformed(ActionEvent evt) {
                 ConnectionRequest cnx = new ConnectionRequest();
-                cnx.setUrl("http://localhost/Velo/web/app_dev.php/api/User/Upd?"
+                cnx.setUrl("http://127.0.0.1/symfony/Velo/web/app_dev.php/api/User/Upd?"
                         + "id=" + u.getId()
                         + "&nom=" + nom.getText()
                         + "&email=" + email.getText()

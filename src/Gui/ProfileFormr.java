@@ -6,6 +6,7 @@
 package Gui;
 
 import Entites.FosUser;
+import Reparateurs.showEspaceForm;
 import Services.ServiceUser;
 import com.codename1.components.FloatingActionButton;
 import com.codename1.components.ImageViewer;
@@ -51,7 +52,7 @@ import utils.SessionUser;
  *
  * @author root
  */
-public class ProfileFormr extends SideMenuBaseForma {
+public class ProfileFormr extends SideMenuBaseFormr {
  private static final String apiKey = "AIzaSyA4N1uhqDRC55eqZ3ZrJ9S_OQ3nL4vPYKg";
     final DefaultListModel<String> options = new DefaultListModel<>();
     public ProfileFormr(FosUser u,Resources res) {
@@ -121,7 +122,7 @@ public class ProfileFormr extends SideMenuBaseForma {
 
         EncodedImage placeholder = EncodedImage.createFromImage(Image.createImage(300, 500, 0xffff0000), true);
         URLImage img_user = URLImage.createToStorage(placeholder, u.getPhoto() + ".cache",
-                "http://localhost/Velo//web//uploads//admin//" + u.getPhoto());
+                "http://localhost/symfony/Velo//web//uploads//admin//" + u.getPhoto());
 
         ImageViewer imgUser = new ImageViewer();
         imgUser.setImage(img_user);
@@ -251,30 +252,10 @@ public class ProfileFormr extends SideMenuBaseForma {
 
     }
 
-    @Override
-    protected void showEventForm(Resources res) {
-        new EventForm(res).show();
-    }
+    
 
-    @Override
-    protected void showLocationsForm(Resources res) {
-        new LocationForm(res).show();
-    }
-
-    @Override
-    protected void showVelosForm(Resources res) {
-        new VelosForm(res).show();
-    }
-
-    @Override
-    protected void showReclamationsForm(Resources res) {
-        new ReclamationsForm(res).show();
-    }
-
-    @Override
-    protected void showReparationsForm(Resources res) {
-        new ReparationsForm(res).show();
-    }
+   
+    
        String[] searchLocations(String text) {
         try {
             if (text.length() > 0) {
@@ -292,5 +273,15 @@ public class ProfileFormr extends SideMenuBaseForma {
             Log.e(err);
         }
         return null;
+    }
+
+    @Override
+    protected void showReclamationsForm(Resources res) {
+        
+    }
+
+     @Override
+    protected void showReparationsForm(Resources res) {
+        new showEspaceForm(res).show();
     }
 }

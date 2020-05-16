@@ -54,7 +54,7 @@ public class ServiceUser {
     }
 
     public boolean adduser(FosUser u) {
-        String url = "http://localhost/Velo/web/app_dev.php/api/users/new?&Username=" + u.getUsername() + "&Email=" + u.getEmail() + "&Password=" + u.getPassword() + "&roles=" + u.getRoles() + "&Cin=" + u.getCin() + "&Nom=" + u.getNom() + "&Prenom=" + u.getPrenom() + "&Sexe=" + u.getSexe() + "&Date_naissance=" + u.getDate_naissance() + "&Num_tel=" + u.getNum_tel()
+        String url = "http://127.0.0.1/symfony/Velo/web/app_dev.php/api/users/new?&Username=" + u.getUsername() + "&Email=" + u.getEmail() + "&Password=" + u.getPassword() + "&roles=" + u.getRoles() + "&Cin=" + u.getCin() + "&Nom=" + u.getNom() + "&Prenom=" + u.getPrenom() + "&Sexe=" + u.getSexe() + "&Date_naissance=" + u.getDate_naissance() + "&Num_tel=" + u.getNum_tel()
                 + "&Adresse=" + u.getAdresse() + "&Poste=" + u.getPoste() + "&Civilite=" + u.getCivilite() + "&Pays=" + u.getPays() + "&Ville=" + u.getVille() + "&Code_postal=" + u.getCode_postal() + "&photo=" + u.getPhoto();
 
         req.setUrl(url);
@@ -102,7 +102,7 @@ public class ServiceUser {
         return responseResult;
     }*/
     public ArrayList<FosUser> getAllTasks() throws ParseException {
-        String url = Statics.BASE_URL + "/users/alluser";
+        String url = Statics.BASE_URL2 + "/users/alluser";
 
         request.setUrl(url);
         request.setPost(false);

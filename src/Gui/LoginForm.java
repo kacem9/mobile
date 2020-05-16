@@ -6,6 +6,8 @@
 package Gui;
 
 import Entites.FosUser;
+import EspaceClient.ProfileFormv;
+import EspaceVendeur.LoginFormVendeur;
 import Services.Service_bcrypt;
 import com.codename1.io.CharArrayReader;
 import com.codename1.io.ConnectionRequest;
@@ -30,6 +32,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import utils.SessionUser;
 
 //import java.util.logging.Level;
 //import java.util.logging.Logger;
@@ -118,32 +121,44 @@ public class LoginForm extends Form {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 ConnectionRequest cnx = new ConnectionRequest();
-                cnx.setUrl("http://localhost/Velo/web/app_dev.php/api/users/alluser");
+                cnx.setUrl("http://127.0.0.1/symfony/Velo/web/app_dev.php/api/users/alluser");
                 cnx.addResponseListener(new ActionListener<NetworkEvent>() {
                     @Override
                     public void actionPerformed(NetworkEvent evt) {
                         boolean i = false;
+                       
                         for (FosUser e : getListUsers(new String(cnx.getResponseData()))) {
+                            
                             String crypted = e.getPassword();
                             if ((login.getText().equals(e.getUsername())) && (Service_bcrypt.checkpw(password.getText(), crypted))) {
                                 System.out.println("rooooooooooooooooooooole" + e.getRoles());
 
                                 if ((e.getRoles().equals("[" + "VENDEUR, ROLE_USER" + "]"))) {
+
+                                    SessionUser.setUser(e);
                                     // u = e;
-                                    new ProfileFormv(e,theme).show();
+                                    new LoginFormVendeur(theme).show();
 
                                 } else if ((e.getRoles().equals("[" + "CHEF, ROLE_USER" + "]"))) {
                                     //u = e;
+//                    int id=SessionUser.getUser().getId();
+                                      SessionUser.setUser(e);
+                                    // u = e;
+                                    new ProfileFormc(e,theme).show();
 
                                     new ProfileFormc(e,theme).show();
                                 } else if ((e.getRoles().equals("[" + "ACHTEUR, ROLE_USER" + "]"))) {
-                                 
+                                    SessionUser.setUser(e);
+
                                     //u = e;
 
-                                    new ProfileForma(e, theme).show();
+                                    new ProfileFormv(theme).show();
                                 } else if ((e.getRoles().equals("[" + "REPARATEUR, ROLE_USER" + "]"))) {
+                                                      
+
                                     //u = e;
 
+                                    SessionUser.setUser(e);
                                     new ProfileFormr(e,theme).show();
                                 }
 

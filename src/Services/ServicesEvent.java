@@ -45,7 +45,7 @@ public class ServicesEvent {
     }
     
     public ArrayList<Event> getAllEvents() throws ParseException {
-        String url = Statics.BASE_URL +"/event/afficher";
+        String url = Statics.BASE_URL2 +"/event/afficher";
 
         request.setUrl(url);
         request.setPost(false);
@@ -93,7 +93,7 @@ public class ServicesEvent {
                 System.out.println(Date_event);
 
 
-                events.add(new Event(Nom, Date_event, Description, Lieu_event, Photo, Prix, Nbr_participant, etat));
+                events.add(new Event(id,Nom, Date_event, Description, Lieu_event, Photo, Prix, Nbr_participant, etat));
             }
 
         } catch (IOException ex) {
@@ -102,8 +102,58 @@ public class ServicesEvent {
         return events;
     }
     
+     public boolean AjouterEvent(Event ev,int idu) {
+        String url = Statics.BASE_URL2 + "/event/ajouter?Nom=" + ev.getNom()
+                + "&Description=" + ev.getDescription()
+                + "&DateEvent=" + ev.getDate_event()
+                + "&Photo=" + ev.getPhoto()
+                + "&LieuEvent=" + ev.getLieu_event()
+                + "&Prix=" + ev.getPrix()
+                + "&NbrParticipant=" + ev.getNbr_participant()
+                +idu ;
+              //  + "&Categories_id=" + ev.getCategories_id();
+
+        request.setUrl(url);
+        request.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                responseResult = request.getResponseCode() == 200; // Code HTTP 200 OK
+                request.removeResponseListener(this);
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(request);
+        return responseResult;
+    }
+    
+    
+    public boolean ModifierEvent(int id,Event ev) {
+        String url = Statics.BASE_URL2 + "/event/modifier/" + id
+                + "?Nom=" + ev.getNom()
+                + "&Description=" + ev.getDescription()
+                + "&DateEvent=" + ev.getDate_event()
+                + "&Photo=" + ev.getPhoto()
+                + "&LieuEvent=" + ev.getLieu_event()
+                + "&Prix=" + ev.getPrix()
+                + "&NbrParticipant=" + ev.getNbr_participant();
+              //  + "&Categories_id=" + ev.getCategories_id();
+                System.out.println("done ............................");
+        request.setUrl(url);
+        request.addResponseListener(new ActionListener<NetworkEvent>() {
+            @Override
+            public void actionPerformed(NetworkEvent evt) {
+                responseResult = request.getResponseCode() == 200; // Code HTTP 200 OK
+                request.removeResponseListener(this);
+                 System.out.println("done ::::::::::::::::::::::::::::::");
+            }
+        });
+        NetworkManager.getInstance().addToQueueAndWait(request);
+         System.out.println("done ");
+        return responseResult;
+        
+    }
+    
     public boolean SupprimerEvent(int id) {
-        String url = Statics.BASE_URL +"/event/supp/"+ id;
+         String url = Statics.BASE_URL2 +"/event/supprimer/" + id;
        
         request.setUrl(url);
         request.addResponseListener(new ActionListener<NetworkEvent>() {
@@ -111,57 +161,14 @@ public class ServicesEvent {
             public void actionPerformed(NetworkEvent evt) {
                 responseResult = request.getResponseCode() == 200; // Code HTTP 200 OK
                 request.removeResponseListener(this);
-         System.out.println(responseResult);
-           
-            }
-        });
-        NetworkManager.getInstance().addToQueueAndWait(request);
-         
-        return responseResult;
-    }
-    
-    public boolean AjouterEvent(Event ev) {
-        String url = Statics.BASE_URL + "/event/ajouter?Nom=" + ev.getNom()
-                + "&Description=" + ev.getDescription()
-                + "&DateEvent=" + ev.getDate_event()
-                + "&Photo=" + ev.getPhoto()
-                + "&LieuEvent=" +ev.getLieu_event()
-                + "&Prix=" + ev.getPrix()
-                + "&NbrParticipant=" + ev.getNbr_participant();
-              //  + "&Categories_id=" + ev.getCategories_id();
-
-        request.setUrl(url);
-        request.addResponseListener(new ActionListener<NetworkEvent>() {
-            @Override
-            public void actionPerformed(NetworkEvent evt) {
-                responseResult = request.getResponseCode() == 200; // Code HTTP 200 OK
-                request.removeResponseListener(this);
             }
         });
         NetworkManager.getInstance().addToQueueAndWait(request);
         return responseResult;
     }
     
-    public void ModifierEvent(Event ev) {
-        String url = Statics.BASE_URL + "/event/modifier/" + ev.getId()
-                + "?Nom=" + ev.getNom()
-                + "&Description=" + ev.getDescription()
-                + "&DateEvent=" + ev.getDate_event()
-                + "&Photo=" + ev.getPhoto()
-                + "&LieuEvent=" +ev.getLieu_event()
-                + "&Prix=" + ev.getPrix()
-                + "&NbrParticipant=" + ev.getNbr_participant();
-              //  + "&Categories_id=" + ev.getCategories_id();
-
-        request.setUrl(url);
-        request.addResponseListener(new ActionListener<NetworkEvent>() {
-            @Override
-            public void actionPerformed(NetworkEvent evt) {
-                responseResult = request.getResponseCode() == 200; // Code HTTP 200 OK
-                request.removeResponseListener(this);
-            }
-        });
-        NetworkManager.getInstance().addToQueueAndWait(request);
-
-    }
+   
+    
+    
+    
 }
