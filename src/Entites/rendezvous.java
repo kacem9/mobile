@@ -22,7 +22,7 @@ private int numtel;
 public int user ;
 private int fos ;
 
-    public rendezvous(int Cin, String nom, String prenom, String email, String adresse, String message, String typepanne, int numtel,int user) {
+    public rendezvous(int Cin, String nom, String prenom, String email, String adresse, String message, String typepanne, int numtel,int user,int fos) {
         this.Cin = Cin;
         this.nom = nom;
         this.prenom = prenom;
@@ -32,6 +32,7 @@ private int fos ;
         this.typepanne = typepanne;
         this.numtel = numtel;
          this.user = user;
+         this.fos = fos;
     }
 
 
@@ -45,7 +46,7 @@ private int fos ;
         this.message = message;
     }
 
-    public rendezvous(int Cin, String nom, String prenom, String email, String adresse, String message, String typepanne, int numtel, int user, int fos) {
+    public rendezvous(int Cin, String nom, String prenom, String email, String adresse, String message, String typepanne, int numtel, int user) {
         this.Cin = Cin;
         this.nom = nom;
         this.prenom = prenom;
@@ -55,7 +56,7 @@ private int fos ;
         this.typepanne = typepanne;
         this.numtel = numtel;
         this.user = user;
-        this.fos = fos;
+        
     }
 
     public rendezvous() {
@@ -143,7 +144,7 @@ private int fos ;
 
     @Override
     public String toString() {
-        return "rendezvous{" + "Cin=" + Cin + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", adresse=" + adresse + ", message=" + message + ", typepanne=" + typepanne + ", numtel=" + numtel +", user=" + user + '}';
+        return "rendezvous{" + "Cin=" + Cin + ", nom=" + nom + ", prenom=" + prenom + ", email=" + email + ", adresse=" + adresse + ", message=" + message + ", typepanne=" + typepanne + ", numtel=" + numtel +", user=" + user + ", fos=" + fos +'}';
     }
 
 

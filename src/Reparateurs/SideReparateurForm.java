@@ -43,11 +43,11 @@ public abstract class SideReparateurForm extends Form {
         
         
         
-        getToolbar().addMaterialCommandToSideMenu(" My space ", FontImage.MATERIAL_SETTINGS,  e -> showEspaceForm(res));
+        getToolbar().addMaterialCommandToSideMenu(" My space ", FontImage.MATERIAL_SETTINGS,  e -> showReparationsForm(res));
         getToolbar().addMaterialCommandToSideMenu("  Logout", FontImage.MATERIAL_EXIT_TO_APP,  e -> new LoginForm(res).show());
     }
     
   
-    protected abstract void showEspaceForm(Resources res);
+    protected abstract void showReparationsForm(Resources res);
 }
 

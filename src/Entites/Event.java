@@ -15,7 +15,6 @@ import java.util.Date;
  */
 public class Event {
      int id  ;
- 
     String Nom ;
     java.util.Date dt = new java.util.Date();
    java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -26,13 +25,14 @@ public class Event {
     Double Prix ;
     int Nbr_participant ;
     int etat ;
+    int User;
 
 
     public Event() {
     }
 
-    public Event(String Nom,String Date_event, String Description, String Lieu_event, String Photo, Double Prix, int Nbr_participant, int etat) {
-       
+    public Event(int id,String Nom,String Date_event, String Description, String Lieu_event, String Photo, Double Prix, int Nbr_participant, int etat) {
+        this.id=id;
         this.Nom = Nom;
         this.Date_event=Date_event;
         this.Description = Description;
@@ -42,6 +42,41 @@ public class Event {
         this.Nbr_participant = Nbr_participant;
         this.etat = etat;
     }
+
+    public Event(String Nom, String Description,String Date_event, String Lieu_event, String Photo, Double Prix, int Nbr_participant, int etat) {
+        this.Nom = Nom;
+        this.Description = Description;
+        this.Date_event=Date_event;
+        this.Lieu_event = Lieu_event;
+        this.Photo = Photo;
+        this.Prix = Prix;
+        this.Nbr_participant = Nbr_participant;
+        this.etat = etat;
+    }
+
+    public Event(int id, String Nom, String Description,String Date_event, String Lieu_event, String Photo, Double Prix, int Nbr_participant) {
+        this.id = id;
+        this.Nom = Nom;
+        this.Description = Description;
+        this.Date_event=Date_event;
+        this.Lieu_event = Lieu_event;
+        this.Photo = Photo;
+        this.Prix = Prix;
+        this.Nbr_participant = Nbr_participant;
+    }
+
+    public int getUser() {
+        return User;
+    }
+
+    public void setUser(int User) {
+        this.User = User;
+    }
+
+  
+
+   
+   
     
     
 
@@ -124,6 +159,10 @@ public class Event {
     public void setNbr_participant(int Nbr_participant) {
         this.Nbr_participant = Nbr_participant;
     }
+
+
+
+    
 
     public int getEtat() {
         return etat;

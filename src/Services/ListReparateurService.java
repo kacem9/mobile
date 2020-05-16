@@ -11,6 +11,7 @@ import com.codename1.ui.events.ActionListener;
 import Entites.Reparateur;
 import Entites.rendezvous;
 import Entites.validrendezvous;
+import com.codename1.components.ToastBar;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -148,7 +149,7 @@ public class ListReparateurService {
         NetworkManager.getInstance().addToQueueAndWait(req);
         return reparateurs;
     }
-       public void ajoutRendezvous(rendezvous rep ,Integer user) {
+       public void ajoutRendezvous(rendezvous rep ,Integer user,String nom,String Prenom,String Email,String Adresse ,String Num_tel,Integer fos) {
 
         try {
 
@@ -157,9 +158,9 @@ public class ListReparateurService {
             connReq.setContentType("application/json");
             //rendezvous rep =new rendezvous();
             connReq.setUrl("http://localhost/Velo/web/app_dev.php/api/reparateurs/MakeRdv?"
-                    + "nom=nesriiiiiiiiiine&prenom=nesriiiiiiiiiine"
-                    + "&email=nesrinezouaoui583@gmail.com&message="+rep.getMessage()
-                    + "&typepanne="+rep.getTypepanne()+"&adresse=ijil&numtel=12345678&user="+user);
+                    + "nom="+nom+"&prenom="+Prenom
+                    + "&email="+Email+"&message="+rep.getMessage()
+                    + "&typepanne="+rep.getTypepanne()+"&adresse="+Adresse+"&numtel="+Num_tel+"&user="+user+"&fos="+fos);
             connReq.addResponseListener((e) -> {
                 String str = new String(connReq.getResponseData());
                 System.out.println(str);
@@ -179,8 +180,10 @@ public class ListReparateurService {
             List<Map<String,Object>> list = (List<Map<String,Object>>)rendezvousListJson.get("root");
             for(Map<String,Object> obj : list){
                 rendezvous t = new rendezvous();
+
                 float Cin = Float.parseFloat(obj.get("Cin").toString());
                int numtel = (int)Float.parseFloat(obj.get("numtel").toString());
+               int user=(int) Float.parseFloat(obj.get("user").toString());
                 t.setCin((int)Cin);
                 t.setNom(obj.get("nom").toString());
                 t.setPrenom(obj.get("prenom").toString());
@@ -189,6 +192,7 @@ public class ListReparateurService {
                 t.setMessage(obj.get("message").toString());
                 t.setTypepanne(obj.get("typepanne").toString());
                 t.setNumtel((int)numtel);
+                t.setUser((int)user);
                 rendezvous.add(t);
                 System.err.println("re"+rendezvous);
             }
@@ -215,14 +219,14 @@ public class ListReparateurService {
         return rendezvous;
     }
     
-    public void modWork(rendezvous r,Integer Cin) {
+    public void modWork(rendezvous r,Integer Cin,String nom,String Prenom,String Email,String Adresse ,String Num_tel,Integer user) {
         try {
             ConnectionRequest connReq = new ConnectionRequest();
             connReq.setPost(true);
             connReq.setContentType("application/json");
             connReq.setUrl("http://localhost/Velo/web/app_dev.php/api/reparateurs/ModifiRdv?Cin="+Cin+
-                     "&nom=nesrine&prenom=nesrine&email=nesrinezouaoui777@gmail.com&message="+r.getMessage()
-                    + "&typepanne="+r.getTypepanne()+"&adresse=ijil&numtel=12345678&user=11");
+                     "&nom="+nom+"&prenom="+Prenom+"&email="+Email+"&message="+r.getMessage()
+                    + "&typepanne="+r.getTypepanne()+"&adresse="+Adresse+"&numtel="+Num_tel+"&user="+user);
 
             connReq.addResponseListener((e) -> {
                 String str = new String(connReq.getResponseData());
@@ -263,8 +267,8 @@ public class ListReparateurService {
                 rendezvous t = new rendezvous();
                 float Cin = Float.parseFloat(obj.get("Cin").toString());
                int numtel = (int)Float.parseFloat(obj.get("numtel").toString());
-               int user = (int)Float.parseFloat(obj.get("user").toString());
-               //int fos = (int)Float.parseFloat(obj.get("fos").toString());
+              int user=(int) Float.parseFloat(obj.get("user").toString());
+               int fos = (int)Float.parseFloat(obj.get("fos").toString());
                 t.setCin((int)Cin);
                 t.setNom(obj.get("nom").toString());
                 t.setPrenom(obj.get("prenom").toString());
@@ -274,7 +278,7 @@ public class ListReparateurService {
                 t.setTypepanne(obj.get("typepanne").toString());
                 t.setNumtel((int)numtel);
                 t.setUser((int)user);
-               // t.setFos((int)fos);
+                t.setFos((int)fos);
                 rendezvous.add(t);
                 System.err.println("re"+rendezvous);
             }
@@ -317,7 +321,7 @@ public class ListReparateurService {
             System.err.println(err.getMessage());
         }
     }     
-      public void validsrendezvous(validrendezvous v ,Integer user,String emailR ) {
+      public void validsrendezvous(validrendezvous v ,Integer user_cc,Integer user,String emailR ) {
 
         try {
 
@@ -326,7 +330,7 @@ public class ListReparateurService {
             connReq.setContentType("application/json");
             //rendezvous rep =new rendezvous();
             connReq.setUrl("http://localhost/Velo/web/app_dev.php/api/reparateurs/validsrendezvous?dateheure="+v.getDateheure()
-                    + "&prix="+v.getPrix()+"&promo="+v.getPromo()+"&etat="+v.getEtat()+"&message="+v.getMessage()+"&emailR="+emailR+"&user="+user);
+                    + "&prix="+v.getPrix()+"&promo="+v.getPromo()+"&etat="+v.getEtat()+"&message="+v.getMessage()+"&emailR="+emailR+"&user="+user+"&user_cc="+user_cc);
             connReq.addResponseListener((e) -> {
                 String str = new String(connReq.getResponseData());
                 System.out.println(str);
@@ -346,14 +350,14 @@ public class ListReparateurService {
             for(Map<String,Object> obj : list){
                 validrendezvous t = new validrendezvous();
                 float reference = Float.parseFloat(obj.get("reference").toString());
-               
+                int user=(int) Float.parseFloat(obj.get("user").toString());
                 t.setReference((int)reference);
                 t.setDateheure(obj.get("dateheure").toString());
                 t.setPrix(obj.get("prix").toString());
                 t.setPromo(obj.get("promo").toString());
                 t.setEtat(obj.get("etat").toString());
                 t.setMessage(obj.get("message").toString());
-                
+                 t.setUser((int)user);
                 validrendezvous.add(t);
                 System.err.println("re"+validrendezvous);
             }

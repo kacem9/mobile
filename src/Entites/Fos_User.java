@@ -33,7 +33,6 @@ public class Fos_User {
     String Pays ;
     String Ville ;
     String Code_postal ;
-    
 
     public Fos_User() {
     }
@@ -59,11 +58,7 @@ public class Fos_User {
         this.Ville = Ville;
         this.Code_postal = Code_postal;
     }
-      @Override
-    public String toString() {
-        return "fos_user{" + "id=" + id + ", Nom=" + Nom + ", Prenom=" + Prenom + '}';
-    }
-    
+
     
 
    
@@ -220,5 +215,8 @@ public class Fos_User {
         this.Code_postal = Code_postal;
     }
 
- 
+    @Override
+    public String toString() {
+        return "Fos_User{" + "id=" + id + ", username=" + username + ", username_canonical=" + username_canonical + ", email=" + email + ", email_canonical=" + email_canonical + ", password=" + password + ", roles=" + roles + ", Cin=" + Cin + ", Nom=" + Nom + ", Prenom=" + Prenom + ", Sexe=" + Sexe + ", Date_naissance=" + Date_naissance + ", Num_tel=" + Num_tel + ", Adresse=" + Adresse + ", Poste=" + Poste + ", Civilite=" + Civilite + ", Pays=" + Pays + ", Ville=" + Ville + ", Code_postal=" + Code_postal + '}';
+    }
 }

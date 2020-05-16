@@ -17,6 +17,7 @@ import com.codename1.l10n.ParseException;
 import com.codename1.messaging.Message;
 import com.codename1.ui.Button;
 import com.codename1.ui.ComboBox;
+import com.codename1.ui.Command;
 import com.codename1.ui.Component;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
@@ -47,8 +48,8 @@ import com.nexmo.client.sms.SmsSubmissionResult;
 import com.nexmo.client.sms.messages.TextMessage;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import utils.SessionUser;
+
 
 
 
@@ -81,11 +82,15 @@ public static int conn;
  ListReparateurService ws = new ListReparateurService();       
  ArrayList<rendezvous> rep = ws.getMaRendezvous();
  {for (int i = 0; i < rep.size(); i++) {
+      int test=rep.get(i).getFos();
+ System.out.println("fos="+test);
+    // if(SessionUser.getUser().getId()==test){ 
 Container c2 = new Container(BoxLayout.x()); 
 Container c1 = new Container(BoxLayout.x());
 Container c3 = new Container(BoxLayout.y());   
 final rendezvous fos = rep.get(i);
-int y=rep.get(i).getCin();
+int y=rep.get(i).getUser();
+int k=rep.get(i).getCin();
 
 String w=rep.get(i).getEmail();
 Label ll = new Label("Appointement n°"+i+":");
@@ -113,19 +118,14 @@ FontImage.setMaterialIcon(b, FontImage.MATERIAL_ADD_COMMENT);
             c3.add(b);
             c3.add(b1);
             c3.add(b2);
-            
-     
-     
-            
-    b.addActionListener(new ActionListener() {
+ b.addActionListener(new ActionListener() {
     Form f1 = new Form("Valid this appointement",new FlowLayout());
     
         
               Label lOption = new Label("Valid this appointement : ");
               Picker dateheure = new Picker();
               
-              TextField promos = new TextField();
-              TextField etats = new TextField();
+            
              
              ComboBox promo = new ComboBox("10%","20%","30%","40%","50%","60%","no promotion");
              ComboBox etat = new ComboBox("At home","Etablissement");
@@ -137,16 +137,21 @@ FontImage.setMaterialIcon(b, FontImage.MATERIAL_ADD_COMMENT);
                 
                @Override
                public void actionPerformed(ActionEvent evt) {
-               dateheure.setStrings(new String[]{"appointement", "appointement", "appointement", "appointement"});
+               //dateheure.setStrings(new String[]{"appointement", "appointement", "appointement", "appointement"});
     
                
                btnConf.addActionListener((evt1) -> {
                    try {
                        getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e-> previous.showBack());
-                       validrendezvous p=new validrendezvous( dateheure.getText(),prix.getText(),promos.getText(),etats.getText() ,message.getText());
-                       ws.validsrendezvous(p,y,w);
-                       ToastBar.showInfoMessage("succes validated");
-                       previous.showBack();
+                     
+                      if ((dateheure.getText().length()==0)||(promo.getSelectedItem().toString().equals("")) ||(etat.getSelectedItem().toString().equals("")) ||(prix.getText().length()==0) ||(message.getText().length()==0))
+                           Dialog.show("Alert", "Please fill all the fields", new Command("OK"));
+                      else
+                
+                      {validrendezvous p=new validrendezvous( dateheure.getText(),prix.getText(),promo.getSelectedItem().toString(),etat.getSelectedItem().toString() ,message.getText());
+                       ws.validsrendezvous(p,SessionUser.getUser().getId(),y,w);
+                       ToastBar.showInfoMessage("succes validated");}
+                       //previous.showBack();
                        //add(typepannet);add(typepanne);add(messaget);add(message);
                        //Message mk = new Message("Vous avez choisit de noter notre service avec "+promo.getSelectedItem()+"! MERCI ");
                        //Display.getInstance().sendMessage(new String[] {"nesrinezouaoui583@gmail.com"}, "Avis sur le service annonce dans l'application Souk El Medina", mk);
@@ -157,7 +162,7 @@ FontImage.setMaterialIcon(b, FontImage.MATERIAL_ADD_COMMENT);
                 t.setPromo("promo="+promo.getSelectedItem());
                 t.setEtat("etat="+etat.getSelectedItem());
                 t.setDateheure(dateheure.getText());
-                ser.validsrendezvous(t,y,w);
+                ser.validsrendezvous(t,SessionUser.getUser().getId(),y,w);
                 AuthMethod auth = new TokenAuthMethod("b696c599", "ev9gpTXEbt7vWlOT");  // (api_key,api_secret)
                 NexmoClient client = new NexmoClient(auth);
                 SmsSubmissionResult[] responses;
@@ -174,29 +179,24 @@ FontImage.setMaterialIcon(b, FontImage.MATERIAL_ADD_COMMENT);
                 }
                 EspaceForm com=new EspaceForm(previous);
                 com.show();
-                       
-                       
-                       
-                       
-                       
-                       
-                        EspaceForm  v= new EspaceForm(previous);
+                EspaceForm  v= new EspaceForm(previous);
                        v.show();
                    } catch (ParseException ex) {
-                       Logger.getLogger(EspaceForm.class.getName()).log(Level.SEVERE, null, ex);
+                     
                    }
              
             });
-
+               
                 
               f1.add(lOption);
-              f1.add(dateheure);
+              
               f1.add(prix);
               f1.add(promo);
-              f1.add(promos);
+             
               f1.add(etat);
-              f1.add(etats);
+           
               f1.add(message);
+              f1.add(dateheure);
               f1.add(btnConf);
                               
                 prix.addDataChangedListener((e,k)->{
@@ -209,24 +209,27 @@ FontImage.setMaterialIcon(b, FontImage.MATERIAL_ADD_COMMENT);
            }else{testcode= true;}
                });
               f1.show();
-                         f1.getToolbar().addCommandToLeftBar("back", null, (e -> {
-                       
+
+                  Toolbar tb2= f1.getToolbar();
+       tb2.addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, (ActionListener) (ActionEvent evt1) -> {
                    try {
-                       new  EspaceForm(previous).show();
+                       //previous.showBack();
+                       EspaceForm  v= new EspaceForm(previous);
+                       v.show();
                    } catch (ParseException ex) {
                       
                    }
-                       
-                                
-                            
-                        }) );
+                
+        });        
+              
+              
 
                }
                  }); 
     b1.addActionListener((evt) -> {
           if (Dialog.show("Delete", "Êtes vous sûr de supprimer ce rendezvous??", "Oui", "Non")) {
               try {
-                  ws.DeleteMaRdv(p,y);
+                  ws.DeleteMaRdv(p,k);
                   c3.remove();
                   c1.remove();
                   c2.remove();
@@ -269,7 +272,7 @@ FontImage.setMaterialIcon(b, FontImage.MATERIAL_ADD_COMMENT);
     
 add(c1);
  } 
- 
+ //}
  }
  getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e-> previous.showBack());
     }
@@ -291,6 +294,3 @@ add(c1);
 
 
  }
-    
-    
-

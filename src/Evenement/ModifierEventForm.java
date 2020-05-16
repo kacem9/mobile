@@ -35,7 +35,9 @@ import java.io.IOException;
  */
 public class ModifierEventForm extends Form{
     String path ;
-    public ModifierEventForm(Form previous)
+    ServicesEvent se = new ServicesEvent();
+    
+    public ModifierEventForm(Form previous,int id,String Nom, String Description, String Lieu_event, Double Prix,int Nbr_participant)
     {
         super(BoxLayout.y());
         
@@ -55,13 +57,15 @@ public class ModifierEventForm extends Form{
   
         
         FontImage arrowDown = FontImage.createMaterial(FontImage.MATERIAL_KEYBOARD_ARROW_DOWN, "Label", 3);
-        
+         
+         
         setLayout(BoxLayout.y());
-        TextField tfNom = new TextField();
-        TextArea taDescription = new TextArea("WriteHere", 2, 80, TextArea.BASELINE);
-        TextField tfLieuEvent = new TextField();
-        TextField tfPrix = new TextField();
-        TextField tfNbrparticipant = new TextField();
+        TextField tfid = new TextField(id);
+        TextField tfNom = new TextField(Nom);
+        TextArea taDescription = new TextArea(Description);
+        TextField tfLieuEvent = new TextField(Lieu_event);
+        TextField tfPrix = new TextField(Prix.toString());
+        TextField tfNbrparticipant = new TextField(Nbr_participant);
         Calendar c = new Calendar();
         Picker datePicker = new Picker();
         datePicker.setType(Display.PICKER_TYPE_DATE);
@@ -97,11 +101,11 @@ public class ModifierEventForm extends Form{
         Label lnbr= new Label("Nombre de participant :");
         Label lprix = new Label("Prix :");
         Label lphoto = new Label("Photo :");
-        
+        Label lid = new Label("id :");
         Button btnmodi = new Button("Modifier");
         Button btnAnnuler = new Button("Annuler");
         
-        addAll(lnom,tfNom,lcategories,cbCategories,ldate,datePicker,llieu,tfLieuEvent,lphoto,imgBtn,tfimage,lnbr,tfNbrparticipant,lprix,tfPrix,ldescription,taDescription,btnmodi,btnAnnuler);
+        addAll(tfid,lnom,tfNom,ldate,datePicker,llieu,tfLieuEvent,lphoto,imgBtn,tfimage,lnbr,tfNbrparticipant,lprix,tfPrix,ldescription,taDescription,btnmodi,btnAnnuler);
         
         getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e-> previous.showBack());
         
@@ -109,9 +113,38 @@ public class ModifierEventForm extends Form{
             previous.showBack();
         });
         
-      btnmodi.addActionListener((evt) -> {
-          System.out.println("modifier done ");
-      });
+            btnmodi.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent evt) {
+                if ((tfNom.getText().length()==0)||(tfLieuEvent.getText().length()==0) ||(taDescription.getText().length()==0) ||(tfimage.getText().length()==0) ||(tfNbrparticipant.getText().length()==0) ||(tfPrix.getText().length()==0) ||(datePicker.getText().length()==0))
+                    Dialog.show("Alert", "Please fill all the fields", new Command("OK"));
+                else
+                {
+                    try {
+                         // ev.setId(Integer.parseInt(tfid.getText()));
+//                          ev.setNom(tfNom.getText());
+//                          ev.setDescription(taDescription.getText());
+//                          ev.setDate_event(datePicker.getText());
+//                          ev.setLieu_event(tfLieuEvent.getText());
+//                          ev.setPhoto(tfimage.getText());
+//                          ev.setPrix(Double.valueOf(tfPrix.getText()));
+//                          ev.setNbr_participant(Integer.parseInt(tfNbrparticipant.getText()));
+//                          ev.setEtat(0);
+                          Event ev = new Event( tfNom.getText(), taDescription.getText(), datePicker.getText(), tfLieuEvent.getText(), tfimage.getText(), Double.valueOf(tfPrix.getText()), Integer.parseInt(tfNbrparticipant.getText()), 0);
+                          System.out.println(ev);
+                        if( se.ModifierEvent(id, ev))
+                        {
+                            
+                            Dialog.show("Success","Connection accepted",new Command("OK"));
+                        }else
+                            Dialog.show("ERROR", "Server error", new Command("OK"));
+                    } catch (Exception e) {
+                        Dialog.show("ERROR", "server error", new Command("OK"));
+                        e.printStackTrace();
+                    }  
+                }               
+            }
+        });
     }
     
      private Image createCircleLine(int color, int height, boolean first) {

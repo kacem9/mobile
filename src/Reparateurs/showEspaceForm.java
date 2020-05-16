@@ -4,9 +4,9 @@
  * and open the template in the editor.
  */
 package Reparateurs;
-import Client.ListRepairesForm;
-import Client.listappointmentForm;
-import Client.listvalidatedForm;
+import EspaceClient.ListRepairesForm;
+import EspaceClient.listappointmentForm;
+import EspaceClient.listvalidatedForm;
 import Gui.ReparationsForm;
 import Gui.SideMenuBaseForm;
 import com.codename1.ui.Button;
@@ -103,7 +103,7 @@ public class showEspaceForm extends SideReparateurForm{
         return img;
     }
          @Override
-    protected void showEspaceForm(Resources res) {
+    protected void showReparationsForm(Resources res) {
         new showEspaceForm(res).show();
     }
     

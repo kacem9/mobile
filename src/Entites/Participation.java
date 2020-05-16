@@ -23,6 +23,12 @@ public class Participation {
         this.event = event;
     }
 
+    public Participation(int id_participation) {
+        this.id_participation = id_participation;
+    }
+    
+    
+
     public int getId_participation() {
         return id_participation;
     }

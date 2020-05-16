@@ -7,13 +7,18 @@ package Evenement;
 
 import Entites.Event;
 import Services.ServicesEvent;
-import View.ModifyForm;
 import com.codename1.components.ImageViewer;
+import com.codename1.components.ShareButton;
 import com.codename1.components.SpanLabel;
 import com.codename1.components.ToastBar;
 import com.codename1.l10n.ParseException;
+import com.codename1.location.Geofence;
+import com.codename1.location.Location;
+import com.codename1.location.LocationManager;
+import com.codename1.notifications.LocalNotification;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
+import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
@@ -28,6 +33,8 @@ import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.plaf.Border;
 import com.codename1.ui.plaf.Style;
 import java.util.ArrayList;
+import static jdk.nashorn.internal.runtime.Debug.id;
+
 
 /**
  *
@@ -61,7 +68,7 @@ public class ListEventForm extends Form{
         FontImage arrowDown = FontImage.createMaterial(FontImage.MATERIAL_KEYBOARD_ARROW_DOWN, "Label", 3);
               EncodedImage enc ;
        ServicesEvent se = new ServicesEvent();
-       ArrayList<Event> lis = ServicesEvent.getInstance().getAllEvents();
+       ArrayList<Event> lis = se.getAllEvents();
        { for(int i = 0; i<lis.size(); i++) {
              Container c2 = new Container(BoxLayout.x()); 
             Container c1 = new Container(BoxLayout.x());
@@ -76,7 +83,14 @@ public class ListEventForm extends Form{
             EncodedImage encImage = EncodedImage.createFromImage(placeholder, false);
             ImageViewer img1 = new ImageViewer(URLImage.createToStorage(encImage, "file" + lis.get(i).getPhoto(),
             "http://127.0.0.1/"+ lis.get(i).getPhoto()));
-            //http://127.0.0.1/symfony/Velo/web/images/
+            //http://127.0.0.1/symfony/Velo/web/
+            ShareButton share = new ShareButton();
+                    
+                    
+                    // share.getAllStyles().setBgColor(0x009FFD);
+                    FontImage.setMaterialIcon(share, FontImage.MATERIAL_SHARE);
+                    share.setText("Share");
+                    share.setTextToShare(lis.get(i).getDescription());
             Button btnmodif = new Button("Modifier");
             FontImage.setMaterialIcon(btnsupp, FontImage.MATERIAL_DELETE);
             FontImage.setMaterialIcon(btnmodif, FontImage.MATERIAL_UPLOAD_FILE);
@@ -96,13 +110,22 @@ public class ListEventForm extends Form{
            
             c3.add(btnmodif);
             c3.add(btnsupp);
+            c3.add(share);
             TextField tf = new TextField();
-            
-            int id = lis.get(i).getId();
-                   System.out.println(id);
+           int id = lis.get(i).getId();
+           System.out.println(id);
+           String Nom = lis.get(i).getNom();
+           String Description = lis.get(i).getDescription();
+           String Lieu_event = lis.get(i).getLieu_event();
+           Double Prix = lis.get(i).getPrix();
+           int Nbr_participant=lis.get(i).getNbr_participant();
+          
             btnsupp.addActionListener((evt) -> {
+                
+                   
                  if(new ServicesEvent().SupprimerEvent(id))
                  {
+                    
                       ToastBar.showInfoMessage("Votre evenement est supprimée avec succés");
                     c2.remove();
                     c1.remove();
@@ -115,19 +138,19 @@ public class ListEventForm extends Form{
                     ToastBar.showErrorMessage("Erreur de suppression");
                 }
             });
-            btnmodif.addActionListener((evt) -> {
-                new ModifierEventForm(previous).show();
-            });
-            
-            
 
-        
+          
+            btnmodif.addActionListener((evt) -> {
+                new ModifierEventForm(this,id, Nom, Description, Lieu_event,Prix,Nbr_participant).show();
+            });
+
             add(c1);
 
         }
        
 
         }
+       
        getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e-> previous.showBack());
     
     }
@@ -149,5 +172,7 @@ public class ListEventForm extends Form{
         g.fillArc(height / 2 - height / 4, height / 6, height / 2, height / 2, 0, 360);
         return img;
     }
+    
+ 
 }
 
