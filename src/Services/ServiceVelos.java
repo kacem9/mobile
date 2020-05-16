@@ -41,8 +41,8 @@ public class ServiceVelos {
         request = DataSource.getInstance().getRequest();
     }
 //http://127.0.0.1/Velo/web/app_dev.php/api/newVelo?price_location=100&quantity=2&description=hhhh&localitsation_velo=h&"dateCirculation"=%222019-02-20
-    public boolean addrec(Velo v) {
-        String url = Statics.BASE_URL+"/newVelo?description=" +v.getDescription()+"&localitsation_velo="+v.getLocalitsation_velo()+"&photo="+v.getPhoto()+"&price_location="+v.getPrice_location()+"&quantity="+v.getQuantity()+"dateCirculation="+v.getDate_circulation();
+    public boolean addrec(Velo v,int idu) {
+        String url = Statics.BASE_URL+"/newVelo/"+idu+"?description=" +v.getDescription()+"&localitsation_velo="+v.getLocalitsation_velo()+"&photo="+v.getPhoto()+"&price_location="+v.getPrice_location()+"&quantity="+v.getQuantity()+"dateCirculation="+v.getDate_circulation();
         request.setUrl(url);
         request.addResponseListener(new ActionListener<NetworkEvent>() {
             @Override

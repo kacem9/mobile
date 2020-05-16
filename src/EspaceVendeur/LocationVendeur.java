@@ -52,7 +52,7 @@ public class LocationVendeur extends SideMenuBaseFormVendeur{
 
         Container titleCmp = BoxLayout.encloseY(
                         FlowLayout.encloseIn(menuButton),
-                new Label("Evenements", "CenterTitle")
+                new Label("Bikes", "CenterTitle")
                         
                        
                 );
@@ -63,8 +63,8 @@ public class LocationVendeur extends SideMenuBaseFormVendeur{
 
         setupSideMenuBaseFormVendeur(res);
          Label lOption = new Label("Choisir option : ");
-         Button Ajoutevent = new Button("Ajouter Velos(s)");
-         Button Affevent = new Button("Afficher Velos(s)");
+         Button Ajoutevent = new Button("Add Bike(s)");
+         Button Affevent = new Button("List of  Bikes(s)");
           FontImage.setMaterialIcon(Ajoutevent, FontImage.MATERIAL_ADD_COMMENT);
         FontImage.setMaterialIcon(Affevent, FontImage.MATERIAL_VIEW_LIST);
         Ajoutevent.getStyle().setBorder(Border.createDashedBorder(CENTER,CENTER ));

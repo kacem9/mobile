@@ -53,7 +53,7 @@ public class AddVeloL  extends Form{
       
         Container titleCmp = BoxLayout.encloseY(
                         
-                new Label("Ajouter un Velo", "CenterTitle")
+                new Label("Add a Bike", "CenterTitle")
                         
                        
                 );
@@ -142,8 +142,8 @@ public class AddVeloL  extends Form{
                              v.setLocalitsation_velo(Localisation.getText());
                             v.setQuantity(Integer.parseInt(Quantity.getText()));
                     
-      
-                        if( sv.addrec(v))
+      int idu=21;
+                        if( sv.addrec(v,idu))
                         {
                             System.out.println(v);
                             Dialog.show("Success","Connection accepted",new Command("OK"));

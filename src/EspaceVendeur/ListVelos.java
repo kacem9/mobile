@@ -14,8 +14,10 @@ import com.codename1.components.SpanLabel;
 import com.codename1.components.ToastBar;
 import com.codename1.io.FileSystemStorage;
 import com.codename1.l10n.ParseException;
+import com.codename1.notifications.LocalNotification;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
+import com.codename1.ui.Display;
 import com.codename1.ui.EncodedImage;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
@@ -52,7 +54,7 @@ public class ListVelos extends Form {
       
         Container titleCmp = BoxLayout.encloseY(
                         
-                new Label("Liste des velos", "CenterTitle")
+                new Label("List of bikes", "CenterTitle")
                         
                        
                 );
@@ -68,8 +70,8 @@ public class ListVelos extends Form {
              Container c2 = new Container(BoxLayout.x()); 
             Container c1 = new Container(BoxLayout.x());
             Container c3 = new Container(BoxLayout.y());
-            Button btnsupp = new Button("Supprimer");
-    Label ll = new Label("Velo n°"+i+":");
+            Button btnsupp = new Button("Delete");
+    Label ll = new Label("Bike n°"+i+":");
     c2.add(ll);
                    add(c2);
             ImageViewer iv = new ImageViewer();
@@ -81,7 +83,7 @@ public class ListVelos extends Form {
             ImageViewer img1 = new ImageViewer(URLImage.createToStorage(encImage, "file" + lis.get(i).getPhoto(),
             "http://127.0.0.1/Velo/web/images/"+lis.get(i).getPhoto()));
             //http://127.0.0.1/symfony/Velo/web/images/
-            Button btnmodif = new Button("Modifier");
+            Button btnmodif = new Button("Update");
             FontImage.setMaterialIcon(btnsupp, FontImage.MATERIAL_DELETE);
             FontImage.setMaterialIcon(btnmodif, FontImage.MATERIAL_UPLOAD_FILE);
             Label l2 = new Label("Description: " + lis.get(i).getDescription());
@@ -113,7 +115,7 @@ public class ListVelos extends Form {
             btnsupp.addActionListener((evt) -> {
                  if(new ServiceVelos().deleterec(id))
                  {
-                      ToastBar.showInfoMessage("Votre evenement est supprimée avec succés");
+                      ToastBar.showInfoMessage("Bike deleted succefull");
                     c2.remove();
                     c1.remove();
                     c3.remove();
@@ -121,6 +123,18 @@ public class ListVelos extends Form {
                     btnsupp.remove();
                     btnmodif.remove();
                     this.refreshTheme();
+                      LocalNotification n = new LocalNotification();
+        n.setId("notification");
+        n.setAlertBody("Your Bike deleted ");
+        n.setAlertTitle("Succefull !!");
+        //n.setAlertSound("/notification_sound_bells.mp3"); //file name must begin with notification_sound
+        
+        Display.getInstance().scheduleLocalNotification(
+                n,
+                System.currentTimeMillis() + 10 * 1000, // fire date/time
+                LocalNotification.REPEAT_MINUTE  // Whether to repeat and what frequency
+        ); 
+
                  }else{
                     ToastBar.showErrorMessage("Erreur de suppression");
                 }

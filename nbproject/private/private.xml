@@ -4,26 +4,30 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>jar:file:/C:/Users/HP/Desktop/Pidev_velo/lib/CodenameOne_SRC.zip!/com/codename1/ui/Toolbar.java</file>
             <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/Services/CommandeServices.java</file>
+            <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/EspaceVendeur/UpdateVelo.java</file>
             <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/EspaceClient/AffichageCommande.java</file>
             <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/Entites/LigneDeCommandeProduit.java</file>
             <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/EspaceClient/AfficherPanier.java</file>
+            <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/EspaceVendeur/ListVelos.java</file>
+            <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/EspaceVendeur/LoginFormVendeur.java</file>
             <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/EspaceClient/LocationFormV.java</file>
+            <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/Services/ServicesEvent.java</file>
+            <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/EspaceVendeur/LocationVendeur.java</file>
             <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/EspaceClient/ListVeloc.java</file>
-            <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/EspaceClient/ProfileFormv.java</file>
+            <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/Services/PanierServices.java</file>
             <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/Gui/LoginForm.java</file>
-            <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/EspaceClient/SideMenuBaseForm.java</file>
+            <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/Services/FosUserServices.java</file>
             <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/Services/LigneDeCommandeServices.java</file>
             <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/EspaceClient/AfficherLigneCommandes.java</file>
-            <file>jar:file:/C:/Users/HP/Desktop/Pidev_velo/lib/CodenameOne_SRC.zip!/com/codename1/ui/Component.java</file>
             <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/utils/Statics.java</file>
             <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/Services/ServiceVelos.java</file>
             <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/EspaceClient/AjouterLigneDeCommande.java</file>
             <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/Entites/Commande.java</file>
             <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/EspaceClient/AjoutCommandeForm.java</file>
-            <file>jar:file:/C:/Users/HP/Desktop/Pidev_velo/lib/CodenameOne_SRC.zip!/com/codename1/ui/FontImage.java</file>
+            <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/EspaceVendeur/SideMenuBaseFormVendeur.java</file>
             <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/EspaceVendeur/AddVeloL.java</file>
+            <file>file:/C:/Users/HP/Desktop/Pidev_velo/src/Gui/LocationForm.java</file>
         </group>
     </open-files>
 </project-private>

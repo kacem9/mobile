@@ -42,7 +42,7 @@ public class LocationForm extends SideMenuBaseForm{
 
         Container titleCmp = BoxLayout.encloseY(
                         FlowLayout.encloseIn(menuButton),
-                new Label("Loacations", "CenterTitle")
+                new Label("Locations", "CenterTitle")
                         
                        
                 );

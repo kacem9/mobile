@@ -8,6 +8,7 @@ package EspaceVendeur;
 import Entites.Velo;
 import Services.ServiceVelos;
 import com.codename1.io.FileSystemStorage;
+import com.codename1.notifications.LocalNotification;
 import com.codename1.ui.Button;
 import com.codename1.ui.Calendar;
 import com.codename1.ui.Command;
@@ -131,6 +132,18 @@ public class UpdateVelo extends Form{
                         {
                             System.out.println(v);
                             Dialog.show("Success","Connection accepted",new Command("OK"));
+                              LocalNotification n = new LocalNotification();
+        n.setId("notification");
+        n.setAlertBody("Your Bike updated ");
+        n.setAlertTitle("Succefull !!");
+        //n.setAlertSound("/notification_sound_bells.mp3"); //file name must begin with notification_sound
+        
+        Display.getInstance().scheduleLocalNotification(
+                n,
+                System.currentTimeMillis() + 10 * 1000, // fire date/time
+                LocalNotification.REPEAT_MINUTE  // Whether to repeat and what frequency
+        ); 
+
                         }else
                             Dialog.show("ERROR", "Server error", new Command("OK"));
                     } catch (Exception e) {

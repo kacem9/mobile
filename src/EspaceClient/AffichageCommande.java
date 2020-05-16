@@ -73,7 +73,7 @@ public class AffichageCommande {
         constraint.setWidthPercentage(200);
         Container c0 = new Container(new BoxLayout(BoxLayout.X_AXIS));
         Label lh1 = new Label("Id    ");
-        Label lh2 = new Label("Date Commande");
+        Label lh2 = new Label("Date order");
         Label lh3 = new Label("Date Max");
         c0.add(lh1);
         c0.add(lh2);
@@ -137,7 +137,7 @@ public class AffichageCommande {
                     //        Log.p("aaaasa"+lcs.getLignesCommandeProduit(c.getId()));
                     System.out.println("size : " + lstlcp.size());
                     for (LigneDeCommandeProduit lcp : lstlcp) {
-                        btnModif = new Button("Modifier");
+                       // btnModif = new Button("Modifier");
                         Label l1 = new Label("Produit : " + lcp.getDescription());
                         createForFont(smallBoldSystemFont, l1.getText());
                         //System.out.println(l1);
@@ -148,28 +148,12 @@ public class AffichageCommande {
                                 new Label("   Adresse 2 : " + lcp.getAdresse2()),
                                 new Label("   Ville: " + lcp.getVille()),
                                 new Label("   Code Postal : " + lcp.getCodePostalforAff()),
-                                new Label("   Numero Tel  : " + lcp.getNumTel()),
-                                btnModif)
+                                new Label("   Numero Tel  : " + lcp.getNumTel())
+                               )
                         );
-                        btnModif.setBlockLead(true);
+//                        btnModif.setBlockLead(true);
                         System.out.println("addzzzzzz" + lcp.getAdresse());
-                        btnModif.addActionListener(new ActionListener() {
-
-                            @Override
-                            public void actionPerformed(ActionEvent evt) {
-                             
-                                idC = lcp.getIdLigneDeCommande();
-                                System.out.println("id ligne :p " + lcp.getIdLigneDeCommande());
-                            /*    adrm = lcp.getAdresse();
-                                adr2m = lcp.getAdresse2();
-                                vilm = lcp.getVille();
-                                codem = lcp.getCodePostal();
-                                numm = lcp.getNumTel();*/
-                                AjoutCommandeForm acf = new AjoutCommandeForm();
-                                
-
-                            }
-                        });
+                       
 
                     }
 //                    AffichageCommande ac = new AffichageCommande();
