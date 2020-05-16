@@ -8,6 +8,7 @@ package Evenement;
 import Entites.Event;
 import Entites.Fos_User;
 import Services.ServicesEvent;
+import com.codename1.capture.Capture;
 import com.codename1.io.FileSystemStorage;
 import com.codename1.notifications.LocalNotification;
 import com.codename1.ui.Button;
@@ -30,14 +31,19 @@ import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.spinner.Picker;
 import java.io.IOException;
+import utils.SessionUser;
+
 
 /**
  *
  * @author root
  */
 public class AjoutEventForm extends Form{
-    String path ;
-     Fos_User u=new Fos_User(1, "kacem", "yedes", "kacem@esprit.tn", "kacem@esprit.tn", "$2a$10$UNIKTWa9M5bM76nLiknzuetVLDc5CPwwjPpwUv2g06lkAnGnYtR6W", "Acheteur", 1, "kacem", "yedes", "homme", 55845845, "korba", "korba", "monsieur", "korba", "korba", "8070");
+  String path ;
+//    private FileUploader file ;
+//    String fileNameInServer;
+//    private String imgPath ;
+     Fos_User u=new Fos_User();
     public AjoutEventForm(Form previous)
     {
         super(BoxLayout.y());
@@ -81,7 +87,7 @@ public class AjoutEventForm extends Form{
                         path = (String) ev.getSource();
                         System.out.println(path.substring(7));
                         Image img = null;
-                        tfimage.setText(path.substring(7));//image heya just label nsob feha fel path
+                        tfimage.setText(path.substring(7));
                         try {
                             img = Image.createImage(FileSystemStorage.getInstance().openInputStream(path));
                             System.out.println(img);
@@ -92,6 +98,38 @@ public class AjoutEventForm extends Form{
                 }
             }, Display.GALLERY_IMAGE);
         });
+//        Button picture = new Button("parcourir");
+//        picture.setMaterialIcon(FontImage.MATERIAL_CLOUD_UPLOAD);
+//        TextField path = new TextField();
+//        
+//        picture.addPointerReleasedListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent evt) {
+//                 try{
+//                imgPath = Capture.capturePhoto();
+//                
+//                System.out.println(imgPath);
+//                String link =imgPath.toString();
+//                int pod = link.indexOf("/",2);
+//                String news = link.substring(pod+2,link.length());
+//                System.out.println(""+news);
+//                
+//                FileUploader fu = new FileUploader("http://localhost/symfony/Velo/web");
+//                     System.out.println("done");
+//                fileNameInServer =fu.upload(news);
+//                     System.out.println("done 1");
+//                path.setText(fileNameInServer);
+//                     System.out.println("done 2");
+//            }catch (IOException ex){
+//                ex.printStackTrace();
+//            }catch (Exception ex){
+//                ex.printStackTrace();
+//            }
+//            }
+//        }) ;     
+           
+       
+        
         ComboBox cbCategories = new ComboBox("Evénement sportif","Bourse aux velos","Balade avec les velos"); //a modifier
         Label lcategories = new Label("Categories :");
         Label lnom = new Label("Nom :");
@@ -105,7 +143,7 @@ public class AjoutEventForm extends Form{
         Button btnValider = new Button("Save");
         Button btnAnnuler = new Button("Annuler");
         
-        addAll(id,tfid,lnom,tfNom,lcategories,cbCategories,ldate,datePicker,llieu,tfLieuEvent,lphoto,imgBtn,tfimage,lnbr,tfNbrparticipant,lprix,tfPrix,ldescription,taDescription,btnValider,btnAnnuler);
+        addAll(lnom,tfNom,ldate,datePicker,llieu,tfLieuEvent,lphoto,imgBtn,tfimage,lnbr,tfNbrparticipant,lprix,tfPrix,ldescription,taDescription,btnValider,btnAnnuler);
         
         getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e-> previous.showBack());
         
@@ -113,49 +151,76 @@ public class AjoutEventForm extends Form{
             previous.showBack();
         });
         
-      btnValider.addActionListener(new ActionListener() {
+//      btnValider.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent evt) {
+//                if ((tfNom.getText().length()==0)||(tfLieuEvent.getText().length()==0) ||(taDescription.getText().length()==0)||(tfimage.getText().length()==0) ||(tfNbrparticipant.getText().length()==0) ||(tfPrix.getText().length()==0) ||(datePicker.getText().length()==0))
+//                    Dialog.show("Alert", "Please fill all the fields", new Command("OK"));
+//                else
+//                {
+//                    try {
+//                        ServicesEvent se = new ServicesEvent();
+//                        Event ev = new Event(Integer.parseInt(tfid.getText()),tfNom.getText(),datePicker.getText(),taDescription.getText() ,tfLieuEvent.getText(), tfimage.getText(), Double.valueOf(tfPrix.getText()), Integer.parseInt(tfNbrparticipant.getText()), 0);
+//                         //  ev.setId(Integer.parseInt(tfid.getText()));
+//                        // ev.setNom(tfNom.getText());
+//                       // ev.setDescription(taDescription.getText());
+//                      //  ev.setLieu_event(tfLieuEvent.getText());
+//                      //  ev.setDate_event(datePicker.getText());
+//                      //  ev.setPhoto(tfimage.getText());
+//                      //  ev.setPrix(Double.valueOf(tfPrix.getText()));
+//                      //  ev.setNbr_participant(Integer.parseInt(tfNbrparticipant.getText()));
+//                     //   ev.setEtat(0);
+//                    // ev.setUser(u.getId());
+//                        if( se.AjouterEvent(ev))
+//                        {
+//                            System.out.println(ev);
+//                            Dialog.show("Success","Connection accepted",new Command("OK"));
+//                        }else
+//                            Dialog.show("ERROR", "Server error", new Command("OK"));
+//                    } catch (Exception e) {
+//                        Dialog.show("ERROR", "server error", new Command("OK"));
+//                    }
+//                    
+//                }
+//                
+//                
+//            }
+//        });
+
+        btnValider.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent evt) {
                 if ((tfNom.getText().length()==0)||(tfLieuEvent.getText().length()==0) ||(taDescription.getText().length()==0) ||(tfimage.getText().length()==0) ||(tfNbrparticipant.getText().length()==0) ||(tfPrix.getText().length()==0) ||(datePicker.getText().length()==0))
                     Dialog.show("Alert", "Please fill all the fields", new Command("OK"));
                 else
                 {
-                    try {
-                                               
-                        Event ev = new Event(Integer.parseInt(tfid.getText()),tfNom.getText(),datePicker.getText(),taDescription.getText(),tfLieuEvent.getText(),tfimage.getText(),Double.valueOf(tfPrix.getText()),Integer.parseInt(tfNbrparticipant.getText()),0);
-                       // ev.setNom(tfNom.getText());
-                       // ev.setDescription(taDescription.getText());
-                      //  ev.setLieu_event(tfLieuEvent.getText());
-                      //  ev.setDate_event(datePicker.getText());
-                      //  ev.setPhoto(tfimage.getText());
-                      //  ev.setPrix(Double.valueOf(tfPrix.getText()));
-                      //  ev.setNbr_participant(Integer.parseInt(tfNbrparticipant.getText()));
-                     //   ev.setEtat(0);
-                    // ev.setUser(u.getId());
-                        if( ServicesEvent.getInstance().AjouterEvent(ev))
-                        {
+                    try {                       
+                        Event ev = new Event();
+//                      ev.setId(Integer.parseInt(tfid.getText()));
+                        ev.setNom(tfNom.getText());
+                        ev.setDescription(taDescription.getText());
+                        ev.setDate_event(datePicker.getText());
+                        ev.setPhoto(tfimage.getText());
+                        ev.setLieu_event(tfLieuEvent.getText());
+                        ev.setPrix(Double.valueOf(tfPrix.getText()));
+                        ev.setNbr_participant(Integer.parseInt(tfNbrparticipant.getText()));
+                        int idu=SessionUser.getUser().getId();
+                        System.out.println(ev);
+                        System.out.println(idu);
+                        if( ServicesEvent.getInstance().AjouterEvent(ev,idu))
+                         {
                             System.out.println(ev);
                             Dialog.show("Success","Connection accepted",new Command("OK"));
-                        }else
-                            Dialog.show("ERROR", "Server error", new Command("OK"));
+                         }else
+                            Dialog.show("ERROR", "erreur", new Command("OK"));
                     } catch (Exception e) {
                         Dialog.show("ERROR", "server error", new Command("OK"));
-                    }
-                    
-                }
-                
-                
+                        e.printStackTrace();
+                    }  
+                } 
             }
         });
-//      btnValider.addActionListener((e)-> { LocalNotification n = new LocalNotification();
-//        n.setId("notification");
-//        n.setAlertBody("vous avez ajouter un nouveau evenement");
-//        n.setAlertTitle("alert");
-//        Display.getInstance().scheduleLocalNotification(
-//                n,
-//                System.currentTimeMillis() + 10 * 1000, 
-//                LocalNotification.REPEAT_MINUTE  
-//        ); });
+
     }
     
      private Image createCircleLine(int color, int height, boolean first) {

@@ -1,8 +1,9 @@
 package com.mycompany.myapp;
 
 
-import Client.LoginForm;
-import Evenement.LoginFormEvent;
+
+import Gui.LoginForm;
+import View.HomeForm;
 import com.codename1.io.ConnectionRequest;
 import static com.codename1.ui.CN.*;
 import com.codename1.ui.Display;
@@ -25,7 +26,7 @@ import com.codename1.io.NetworkManager;
 public class MyApplication {
 
     private Form current;
-    private Resources theme;
+    public Resources theme;
 
     public void init(Object context) {
         // use two network threads instead of one
@@ -52,8 +53,8 @@ public class MyApplication {
     
     public void start() {
         
-      // new LoginForm(theme).show();
-        new LoginFormEvent(theme).show();
+        new LoginForm(theme).show();
+        
     } 
 
     public void stop() {

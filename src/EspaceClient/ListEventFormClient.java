@@ -3,22 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Evenement;
+package EspaceClient;
 
+import Evenement.*;
 import Entites.Event;
+import Entites.Fos_User;
+import Entites.Participation;
+import Services.ServiceParticipation;
 import Services.ServicesEvent;
 import com.codename1.components.ImageViewer;
-import com.codename1.components.ShareButton;
 import com.codename1.components.SpanLabel;
 import com.codename1.components.ToastBar;
 import com.codename1.l10n.ParseException;
-import com.codename1.location.Geofence;
-import com.codename1.location.Location;
-import com.codename1.location.LocationManager;
-import com.codename1.notifications.LocalNotification;
 import com.codename1.ui.Button;
+import com.codename1.ui.Command;
 import com.codename1.ui.Container;
-import com.codename1.ui.Display;
+import com.codename1.ui.Dialog;
 import com.codename1.ui.EncodedImage;
 import com.codename1.ui.FontImage;
 import com.codename1.ui.Form;
@@ -28,26 +28,30 @@ import com.codename1.ui.Label;
 import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.URLImage;
+import com.codename1.ui.events.ActionEvent;
+import com.codename1.ui.events.ActionListener;
 import com.codename1.ui.layouts.BoxLayout;
 import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.plaf.Border;
 import com.codename1.ui.plaf.Style;
 import java.util.ArrayList;
 import static jdk.nashorn.internal.runtime.Debug.id;
-
+import utils.SessionUser;
 
 /**
  *
  * @author root
  */
-public class ListEventForm extends Form{
+public class ListEventFormClient extends Form{
+    Participation p = new Participation();
+     Fos_User u=new Fos_User();
      private void initStarRankStyle(Style s, Image star) {
     s.setBackgroundType(Style.BACKGROUND_IMAGE_TILE_BOTH);
     s.setBorder(Border.createEmpty());
     s.setBgImage(star); 
    s.setBgTransparency(0);
      }
-    public ListEventForm(Form previous)throws ParseException {
+    public ListEventFormClient(Form previous)throws ParseException {
         super(BoxLayout.y());
         
         Toolbar tb = getToolbar();
@@ -70,10 +74,29 @@ public class ListEventForm extends Form{
        ServicesEvent se = new ServicesEvent();
        ArrayList<Event> lis = se.getAllEvents();
        { for(int i = 0; i<lis.size(); i++) {
+           
+           
              Container c2 = new Container(BoxLayout.x()); 
             Container c1 = new Container(BoxLayout.x());
             Container c3 = new Container(BoxLayout.y());
-            Button btnsupp = new Button("Supprimer");
+            
+         
+            
+            Button btParticiper = new Button("Participer");
+            Button btannuler = new Button("Annuler");
+         
+             if(SessionUser.getUser().getId() != p.getId_user()){
+                   btParticiper.setEnabled(true);
+                   btannuler.setEnabled(false);  
+                }
+                else{
+                    btParticiper.setEnabled(false);  
+                    btannuler.setEnabled(true); 
+                }
+            
+            
+            
+            
     Label ll = new Label("Event n°"+i+":");
     c2.add(ll);
                    add(c2);
@@ -83,17 +106,10 @@ public class ListEventForm extends Form{
             EncodedImage encImage = EncodedImage.createFromImage(placeholder, false);
             ImageViewer img1 = new ImageViewer(URLImage.createToStorage(encImage, "file" + lis.get(i).getPhoto(),
             "http://127.0.0.1/"+ lis.get(i).getPhoto()));
-            //http://127.0.0.1/symfony/Velo/web/
-            ShareButton share = new ShareButton();
-                    
-                    
-                    // share.getAllStyles().setBgColor(0x009FFD);
-                    FontImage.setMaterialIcon(share, FontImage.MATERIAL_SHARE);
-                    share.setText("Share");
-                    share.setTextToShare(lis.get(i).getDescription());
-            Button btnmodif = new Button("Modifier");
-            FontImage.setMaterialIcon(btnsupp, FontImage.MATERIAL_DELETE);
-            FontImage.setMaterialIcon(btnmodif, FontImage.MATERIAL_UPLOAD_FILE);
+            //http://127.0.0.1/symfony/Velo/web/images/
+            
+            FontImage.setMaterialIcon(btParticiper, FontImage.MATERIAL_KEYBOARD_ARROW_RIGHT);
+            FontImage.setMaterialIcon(btannuler, FontImage.MATERIAL_CLEAR);
             Label l2 = new Label("Nom: " + lis.get(i).getNom());
             Label l3 = new Label("Date Event: " + lis.get(i).getDate_event());
             Label l4 = new Label("Lieu Event: " + lis.get(i).getLieu_event());
@@ -108,49 +124,59 @@ public class ListEventForm extends Form{
             c3.add(l5);
 
            
-            c3.add(btnmodif);
-            c3.add(btnsupp);
-            c3.add(share);
+            c3.add(btParticiper);
+            c3.add(btannuler);
             TextField tf = new TextField();
-           int id = lis.get(i).getId();
-           System.out.println(id);
-           String Nom = lis.get(i).getNom();
-           String Description = lis.get(i).getDescription();
-           String Lieu_event = lis.get(i).getLieu_event();
-           Double Prix = lis.get(i).getPrix();
-           int Nbr_participant=lis.get(i).getNbr_participant();
-          
-            btnsupp.addActionListener((evt) -> {
+           
+            ServiceParticipation sp = new ServiceParticipation();
+            
+            ArrayList<Participation> list = sp.getAllParticipation();
+            for(int j = 0; j<list.size(); j++) {
+                int id_participation=list.get(j).getId_participation();
+                System.out.println(id_participation);
+                TextField tfidparticipation = new TextField(list.get(j).getId_participation());
+                TextField tfidUser = new TextField(1);
+                TextField tfevent = new TextField(list.get(j).getEvent());
                 
-                   
-                 if(new ServicesEvent().SupprimerEvent(id))
+               
+                 
+            btannuler.addActionListener((evt) -> {
+                
+                  
+                 if(sp.AnnulerParticipation(id_participation))
                  {
                     
-                      ToastBar.showInfoMessage("Votre evenement est supprimée avec succés");
-                    c2.remove();
-                    c1.remove();
-                    c3.remove();
-                    img1.remove();
-                    btnsupp.remove();
-                    btnmodif.remove();
-                    this.refreshTheme();
+                      ToastBar.showInfoMessage("vous avez annuler votre participation");
+                      btannuler.setEnabled(false);  
+
                  }else{
-                    ToastBar.showErrorMessage("Erreur de suppression");
+                    ToastBar.showErrorMessage("Erreur");
                 }
             });
-
-          
-            btnmodif.addActionListener((evt) -> {
-                new ModifierEventForm(this,id, Nom, Description, Lieu_event,Prix,Nbr_participant).show();
-            });
-
+            
+            btParticiper.addActionListener((evt) -> {
+                
+                    try {
+                        int idu=SessionUser.getUser().getId();
+                        if(sp.Participer(id_participation,idu, p))
+                        {
+                          
+                            Dialog.show("Success","Connection accepted",new Command("OK"));
+                        }else
+                            Dialog.show("ERROR", "Server error", new Command("OK"));
+                    } catch (Exception e) {
+                        Dialog.show("ERROR", "server error", new Command("OK"));
+                    }
+   
+        });
+            }
             add(c1);
-
-        }
+           
+        
+       }
        
 
         }
-       
        getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e-> previous.showBack());
     
     }

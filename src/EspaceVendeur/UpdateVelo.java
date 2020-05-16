@@ -3,14 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Evenement;
+package EspaceVendeur;
 
-import Entites.Event;
-import Services.ServicesEvent;
+import Entites.Velo;
+import Services.ServiceVelos;
 import com.codename1.io.FileSystemStorage;
+import com.codename1.notifications.LocalNotification;
 import com.codename1.ui.Button;
 import com.codename1.ui.Calendar;
-import com.codename1.ui.ComboBox;
 import com.codename1.ui.Command;
 import com.codename1.ui.Container;
 import com.codename1.ui.Dialog;
@@ -31,13 +31,12 @@ import java.io.IOException;
 
 /**
  *
- * @author root
+ * @author HP
  */
-public class ModifierEventForm extends Form{
-    String path ;
-    ServicesEvent se = new ServicesEvent();
-    
-    public ModifierEventForm(Form previous,int id,String Nom, String Description, String Lieu_event, Double Prix,int Nbr_participant)
+public class UpdateVelo extends Form{
+    String path="";
+    ServiceVelos sv=new ServiceVelos();
+       public UpdateVelo(Form previous,String des,String date,String localisation,String quantity,String price_location,int id)
     {
         super(BoxLayout.y());
         
@@ -46,7 +45,7 @@ public class ModifierEventForm extends Form{
       
         Container titleCmp = BoxLayout.encloseY(
                         
-                new Label("Modifier un evenement", "CenterTitle")
+                new Label("Ajouter un Velo", "CenterTitle")
                         
                        
                 );
@@ -57,15 +56,14 @@ public class ModifierEventForm extends Form{
   
         
         FontImage arrowDown = FontImage.createMaterial(FontImage.MATERIAL_KEYBOARD_ARROW_DOWN, "Label", 3);
-         
-         
+        
         setLayout(BoxLayout.y());
-        TextField tfid = new TextField(id);
-        TextField tfNom = new TextField(Nom);
-        TextArea taDescription = new TextArea(Description);
-        TextField tfLieuEvent = new TextField(Lieu_event);
-        TextField tfPrix = new TextField(Prix.toString());
-        TextField tfNbrparticipant = new TextField(Nbr_participant);
+        TextField description = new TextField(des);
+        TextArea taDescription = new TextArea("WriteHere", 2, 80, TextArea.BASELINE);
+        TextField Localisation = new TextField(localisation);
+        System.out.println(price_location);
+        TextField tfPrix = new TextField(price_location);
+        TextField Quantity = new TextField(quantity);
         Calendar c = new Calendar();
         Picker datePicker = new Picker();
         datePicker.setType(Display.PICKER_TYPE_DATE);
@@ -92,20 +90,20 @@ public class ModifierEventForm extends Form{
                 }
             }, Display.GALLERY_IMAGE);
         });
-        ComboBox cbCategories = new ComboBox("Evénement sportif","Bourse aux velos","Balade avec les velos"); //a modifier
-        Label lcategories = new Label("Categories :");
-        Label lnom = new Label("Nom :");
-        Label ldate = new Label("Date Event :");
-        Label llieu = new Label("Lieu Event :");
+       
+        
+        Label D= new Label("Description :");
+        Label ldate = new Label("Date circulatition :");
+        Label L = new Label("Localisation :");
         Label ldescription = new Label("Description :");
-        Label lnbr= new Label("Nombre de participant :");
-        Label lprix = new Label("Prix :");
+        Label Q= new Label("Quantity :");
+        Label lprix = new Label("Price location :");
         Label lphoto = new Label("Photo :");
-        Label lid = new Label("id :");
-        Button btnmodi = new Button("Modifier");
+        
+        Button btnValider = new Button("Update");
         Button btnAnnuler = new Button("Annuler");
         
-        addAll(tfid,lnom,tfNom,ldate,datePicker,llieu,tfLieuEvent,lphoto,imgBtn,tfimage,lnbr,tfNbrparticipant,lprix,tfPrix,ldescription,taDescription,btnmodi,btnAnnuler);
+        addAll(D,description,L,Localisation,ldate,datePicker,lphoto,imgBtn,tfimage,Q,Quantity,lprix,tfPrix,btnValider,btnAnnuler);
         
         getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e-> previous.showBack());
         
@@ -113,39 +111,51 @@ public class ModifierEventForm extends Form{
             previous.showBack();
         });
         
-            btnmodi.addActionListener(new ActionListener() {
-            @Override
+      btnValider.addActionListener(new ActionListener() {
+           @Override
             public void actionPerformed(ActionEvent evt) {
-                if ((tfNom.getText().length()==0)||(tfLieuEvent.getText().length()==0) ||(taDescription.getText().length()==0) ||(tfimage.getText().length()==0) ||(tfNbrparticipant.getText().length()==0) ||(tfPrix.getText().length()==0) ||(datePicker.getText().length()==0))
+                if ((description.getText().length()==0)||(Localisation.getText().length()==0) ||(taDescription.getText().length()==0) ||(tfimage.getText().length()==0) ||(Quantity.getText().length()==0) ||(tfPrix.getText().length()==0) ||(datePicker.getText().length()==0))
                     Dialog.show("Alert", "Please fill all the fields", new Command("OK"));
                 else
                 {
                     try {
-                         // ev.setId(Integer.parseInt(tfid.getText()));
-//                          ev.setNom(tfNom.getText());
-//                          ev.setDescription(taDescription.getText());
-//                          ev.setDate_event(datePicker.getText());
-//                          ev.setLieu_event(tfLieuEvent.getText());
-//                          ev.setPhoto(tfimage.getText());
-//                          ev.setPrix(Double.valueOf(tfPrix.getText()));
-//                          ev.setNbr_participant(Integer.parseInt(tfNbrparticipant.getText()));
-//                          ev.setEtat(0);
-                          Event ev = new Event( tfNom.getText(), taDescription.getText(), datePicker.getText(), tfLieuEvent.getText(), tfimage.getText(), Double.valueOf(tfPrix.getText()), Integer.parseInt(tfNbrparticipant.getText()), 0);
-                          System.out.println(ev);
-                        if( se.ModifierEvent(id, ev))
+                          Velo v=new Velo();
+             v.setDate_circulation(datePicker.getText());
+                    v.setPhoto(tfimage.getText());
+                    v.setPrice_location(Integer.parseInt(tfPrix.getText()));
+                            v.setDescription(description.getText());
+                             v.setLocalitsation_velo(Localisation.getText());
+                            v.setQuantity(Integer.parseInt(Quantity.getText()));
+                    
+      
+                        if( sv.updatev(id, v))
                         {
-                            
+                            System.out.println(v);
                             Dialog.show("Success","Connection accepted",new Command("OK"));
+                              LocalNotification n = new LocalNotification();
+        n.setId("notification");
+        n.setAlertBody("Your Bike updated ");
+        n.setAlertTitle("Succefull !!");
+        //n.setAlertSound("/notification_sound_bells.mp3"); //file name must begin with notification_sound
+        
+        Display.getInstance().scheduleLocalNotification(
+                n,
+                System.currentTimeMillis() + 10 * 1000, // fire date/time
+                LocalNotification.REPEAT_MINUTE  // Whether to repeat and what frequency
+        ); 
+
                         }else
                             Dialog.show("ERROR", "Server error", new Command("OK"));
                     } catch (Exception e) {
                         Dialog.show("ERROR", "server error", new Command("OK"));
-                        e.printStackTrace();
-                    }  
-                }               
+                    }
+                    
+                }
+                
+                
             }
         });
-    }
+      }  
     
      private Image createCircleLine(int color, int height, boolean first) {
         Image img = Image.createImage(height, height, 0);
@@ -162,4 +172,6 @@ public class ModifierEventForm extends Form{
         g.fillArc(height / 2 - height / 4, height / 6, height / 2, height / 2, 0, 360);
         return img;
     }
+
+
 }

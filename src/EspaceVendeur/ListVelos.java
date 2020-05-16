@@ -3,18 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Evenement;
+package EspaceVendeur;
 
 import Entites.Event;
-import Services.ServicesEvent;
+import Entites.Velo;
+import Evenement.ModifierEventForm;
+import Services.ServiceVelos;
 import com.codename1.components.ImageViewer;
-import com.codename1.components.ShareButton;
 import com.codename1.components.SpanLabel;
 import com.codename1.components.ToastBar;
+import com.codename1.io.FileSystemStorage;
 import com.codename1.l10n.ParseException;
-import com.codename1.location.Geofence;
-import com.codename1.location.Location;
-import com.codename1.location.LocationManager;
 import com.codename1.notifications.LocalNotification;
 import com.codename1.ui.Button;
 import com.codename1.ui.Container;
@@ -29,25 +28,26 @@ import com.codename1.ui.TextField;
 import com.codename1.ui.Toolbar;
 import com.codename1.ui.URLImage;
 import com.codename1.ui.layouts.BoxLayout;
-import com.codename1.ui.layouts.FlowLayout;
 import com.codename1.ui.plaf.Border;
 import com.codename1.ui.plaf.Style;
 import java.util.ArrayList;
-import static jdk.nashorn.internal.runtime.Debug.id;
-
+import utils.SessionUser;
 
 /**
  *
- * @author root
+ * @author HP
  */
-public class ListEventForm extends Form{
-     private void initStarRankStyle(Style s, Image star) {
+public class ListVelos extends Form {
+    
+      Image  img;
+    
+      private void initStarRankStyle(Style s, Image star) {
     s.setBackgroundType(Style.BACKGROUND_IMAGE_TILE_BOTH);
     s.setBorder(Border.createEmpty());
     s.setBgImage(star); 
    s.setBgTransparency(0);
      }
-    public ListEventForm(Form previous)throws ParseException {
+    public ListVelos(Form previous)throws ParseException {
         super(BoxLayout.y());
         
         Toolbar tb = getToolbar();
@@ -55,7 +55,7 @@ public class ListEventForm extends Form{
       
         Container titleCmp = BoxLayout.encloseY(
                         
-                new Label("Liste des evenements", "CenterTitle")
+                new Label("List of bikes", "CenterTitle")
                         
                        
                 );
@@ -63,45 +63,46 @@ public class ListEventForm extends Form{
         
        
         tb.setTitleComponent(titleCmp);
-  
-        
-        FontImage arrowDown = FontImage.createMaterial(FontImage.MATERIAL_KEYBOARD_ARROW_DOWN, "Label", 3);
+   FontImage arrowDown = FontImage.createMaterial(FontImage.MATERIAL_KEYBOARD_ARROW_DOWN, "Label", 3);
               EncodedImage enc ;
-       ServicesEvent se = new ServicesEvent();
-       ArrayList<Event> lis = se.getAllEvents();
+       ServiceVelos se = new ServiceVelos();
+       ArrayList<Velo> lis = se.getAllVelos();
        { for(int i = 0; i<lis.size(); i++) {
              Container c2 = new Container(BoxLayout.x()); 
             Container c1 = new Container(BoxLayout.x());
             Container c3 = new Container(BoxLayout.y());
-            Button btnsupp = new Button("Supprimer");
-    Label ll = new Label("Event n°"+i+":");
+            Button btnsupp = new Button("Delete");
+    Label ll = new Label("Bike n°"+i+":");
     c2.add(ll);
                    add(c2);
             ImageViewer iv = new ImageViewer();
             System.out.println(lis.get(i).getPhoto());
-            Image placeholder = Image.createImage(this.getWidth() / 3 - 3, this.getWidth() / 3- 3, 0xbfc9d2);
+                                    System.out.println(SessionUser.getInstance().getUser().getId());
+
+          //   Image placeholder = Image.createImage(this.getWidth() / 3 - 4, this.getWidth() / 3 - 4, 0xbfc9d2);
+           Image placeholder = Image.createImage(this.getWidth() / 3 - 3, this.getWidth() / 3- 3, 0xbfc9d2);
             EncodedImage encImage = EncodedImage.createFromImage(placeholder, false);
+           //  img = Image.createImage(FileSystemStorage.getInstance().openInputStream(path))
             ImageViewer img1 = new ImageViewer(URLImage.createToStorage(encImage, "file" + lis.get(i).getPhoto(),
-            "http://127.0.0.1/"+ lis.get(i).getPhoto()));
-            //http://127.0.0.1/symfony/Velo/web/
-            ShareButton share = new ShareButton();
-                    
-                    
-                    // share.getAllStyles().setBgColor(0x009FFD);
-                    FontImage.setMaterialIcon(share, FontImage.MATERIAL_SHARE);
-                    share.setText("Share");
-                    share.setTextToShare(lis.get(i).getDescription());
-            Button btnmodif = new Button("Modifier");
+            "http://127.0.0.1/Velo/web/images/"+lis.get(i).getPhoto()));
+            //http://127.0.0.1/symfony/Velo/web/images/
+            Button btnmodif = new Button("Update");
             FontImage.setMaterialIcon(btnsupp, FontImage.MATERIAL_DELETE);
             FontImage.setMaterialIcon(btnmodif, FontImage.MATERIAL_UPLOAD_FILE);
-            Label l2 = new Label("Nom: " + lis.get(i).getNom());
-            Label l3 = new Label("Date Event: " + lis.get(i).getDate_event());
-            Label l4 = new Label("Lieu Event: " + lis.get(i).getLieu_event());
-            Label l5 = new Label("Nbr participant: " + lis.get(i).getNbr_participant());
+            Label l2 = new Label("Description: " + lis.get(i).getDescription());
+            Label l3 = new Label("Date circulation: " + lis.get(i).getDate_circulation());
+            Label l4 = new Label("Localisation: " + lis.get(i).getLocalitsation_velo());
+            Label l5 = new Label("Quantity: " + lis.get(i).getQuantity());
+             String des = lis.get(i).getDescription();
+              String date = lis.get(i).getDate_circulation();
+               String localisation = lis.get(i).getLocalitsation_velo();
+                String quantity = String.valueOf(lis.get(i).getQuantity());
+                   System.out.println(quantity);
+                   String price_location =String.valueOf( lis.get(i).getPrice_location());
             c1.add(img1);
             c1.add(c3);
-            c3.add(new SpanLabel("Description:" + lis.get(i).getDescription()));
-            c3.add(new SpanLabel("Prix:" + lis.get(i).getPrix()));
+           
+            c3.add(new SpanLabel("Price:" + lis.get(i).getPrice_location()));
             c3.add(l2);
             c3.add(l3);
             c3.add(l4);
@@ -110,23 +111,14 @@ public class ListEventForm extends Form{
            
             c3.add(btnmodif);
             c3.add(btnsupp);
-            c3.add(share);
             TextField tf = new TextField();
-           int id = lis.get(i).getId();
-           System.out.println(id);
-           String Nom = lis.get(i).getNom();
-           String Description = lis.get(i).getDescription();
-           String Lieu_event = lis.get(i).getLieu_event();
-           Double Prix = lis.get(i).getPrix();
-           int Nbr_participant=lis.get(i).getNbr_participant();
-          
+            
+            int id = lis.get(i).getId();
+                   System.out.println(id);
             btnsupp.addActionListener((evt) -> {
-                
-                   
-                 if(new ServicesEvent().SupprimerEvent(id))
+                 if(new ServiceVelos().deleterec(id))
                  {
-                    
-                      ToastBar.showInfoMessage("Votre evenement est supprimée avec succés");
+                      ToastBar.showInfoMessage("Bike deleted succefull");
                     c2.remove();
                     c1.remove();
                     c3.remove();
@@ -134,23 +126,35 @@ public class ListEventForm extends Form{
                     btnsupp.remove();
                     btnmodif.remove();
                     this.refreshTheme();
+                      LocalNotification n = new LocalNotification();
+        n.setId("notification");
+        n.setAlertBody("Your Bike deleted ");
+        n.setAlertTitle("Succefull !!");
+        //n.setAlertSound("/notification_sound_bells.mp3"); //file name must begin with notification_sound
+        
+        Display.getInstance().scheduleLocalNotification(
+                n,
+                System.currentTimeMillis() + 10 * 1000, // fire date/time
+                LocalNotification.REPEAT_MINUTE  // Whether to repeat and what frequency
+        ); 
+
                  }else{
                     ToastBar.showErrorMessage("Erreur de suppression");
                 }
             });
-
-          
             btnmodif.addActionListener((evt) -> {
-                new ModifierEventForm(this,id, Nom, Description, Lieu_event,Prix,Nbr_participant).show();
+                new UpdateVelo(this,des,date,localisation,quantity,price_location,id).show();
             });
+            
+            
 
+        
             add(c1);
 
         }
        
 
         }
-       
        getToolbar().addMaterialCommandToLeftBar("", FontImage.MATERIAL_ARROW_BACK, e-> previous.showBack());
     
     }
@@ -172,7 +176,5 @@ public class ListEventForm extends Form{
         g.fillArc(height / 2 - height / 4, height / 6, height / 2, height / 2, 0, 360);
         return img;
     }
-    
- 
-}
 
+}

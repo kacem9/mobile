@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import utils.SessionUser;
 import utils.Statics;
 
 /**
@@ -71,7 +72,7 @@ public class ServiceParticipation {
     }
         
         public boolean AnnulerParticipation(int id_participation) {
-         String url = Statics.BASE_URL +"/event/annuler/" + id_participation;
+         String url = Statics.BASE_URL2 +"/event/annuler/" + id_participation;
        
         request.setUrl(url);
         request.addResponseListener(new ActionListener<NetworkEvent>() {
@@ -86,7 +87,7 @@ public class ServiceParticipation {
     }
         
     public ArrayList<Participation> getAllParticipation() throws ParseException {
-        String url = Statics.BASE_URL +"/event/afficherpar";
+        String url = Statics.BASE_URL2 +"/event/afficherpar";
 
         request.setUrl(url);
         request.setPost(false);
@@ -108,10 +109,10 @@ public class ServiceParticipation {
         return parts;
     }
     
-    public boolean Participer(int id_participation,Participation p) {
-        String url = Statics.BASE_URL + "/event/participer/" + id_participation
-                + "&event=" + p.getEvent()
-                + "&id_user=" + p.getId_user() ;
+    public boolean Participer(int id_participation,int idu,Participation p) {
+        String url = Statics.BASE_URL2 + "/event/participer/" + id_participation
+                + "&event=" + idu
+                + "&id_user=" + SessionUser.getUser().getId();
          
 
         request.setUrl(url);
